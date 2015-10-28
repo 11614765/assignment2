@@ -7,7 +7,7 @@ using System;
 namespace Game1
 {
     /// <summary>
-    /// This is the main type for your game.宋江
+    /// This is the main type for your game.
     /// </summary>
     public class Game1 : Game
     {
