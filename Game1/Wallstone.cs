@@ -20,7 +20,7 @@ namespace Game1
         public override void Draw(GraphicsDevice device, Camera camera)
         {
             //device.SamplerStates[0] = SamplerState.LinearClamp;
-            scale = Matrix.CreateScale(50f);
+            scale = Matrix.CreateScale(3f);
             base.Draw(device, camera);
         }
 

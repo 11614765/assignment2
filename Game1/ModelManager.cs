@@ -99,7 +99,7 @@ namespace Game1
             {
                 Vector3 stoneposition = map.MapToWorld(map.barrierList[i], true);
                 //wallstone.Add(new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition));
-                wallstone[i] = new Wallstone(Game.Content.Load<Model>(@"Models/Skybox/skybox"), stoneposition);
+                wallstone[i] = new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition);
                 models.Add(wallstone[i]);
             }
             
