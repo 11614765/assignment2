@@ -36,9 +36,9 @@ namespace Game1
         GameState currentGameState = GameState.START;
 
         //新加代码end---------------
-        Vector3? forwardPick;
+      
 
-        MousePickForward mousePickForward;
+        MousePicking mousePick;
 
 
         GraphicsDeviceManager graphics;
@@ -158,13 +158,15 @@ namespace Game1
                 if (Mouse.GetState().RightButton == ButtonState.Pressed)
                 {
 
+                    Vector3? pickpos;
+                    MousePicking mousePick;
 
-
-                    mousePickForward = new MousePickForward(device, camera);
-                    forwardPick = mousePickForward.PickedPosition();
-                    if (forwardPick.HasValue)
+                    mousePick = new MousePicking(device, camera);
+                    pickpos = mousePick.GetCollisionPosition();
+                    
+                    if (pickpos.HasValue)
                     {
-                        modelManager.AddBullets(forwardPick.Value);
+                        modelManager.AddBullets(pickpos.Value);
                         soundShot.Play();
                         shotCountdown = 500;
                     }
