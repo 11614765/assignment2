@@ -50,6 +50,7 @@
     <Compile Include="MousePicking.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quadtree.cs" />
     <Compile Include="SkyBox.cs" />
     <Compile Include="SplashScreen.cs" />
     <Compile Include="Tank.cs" />
