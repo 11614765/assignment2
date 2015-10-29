@@ -55,6 +55,7 @@
     <Compile Include="Quadtree.cs" />
     <Compile Include="SkyBox.cs" />
     <Compile Include="SplashScreen.cs" />
+    <Compile Include="Steering.cs" />
     <Compile Include="Tank.cs" />
     <Compile Include="Tank1.cs" />
     <Compile Include="TankEnemy.cs" />

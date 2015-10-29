@@ -10,15 +10,38 @@ namespace Game1
 {
     class Tank : BasicModel
     {
-        public Vector3 CurrentPosition { get { return tankPosition; } }
-        //Vector3 currentPosition;
-        public Vector3 PickPosition { get { return pickPosition; } }
-        Vector3 pickPosition;
+        //tank property define
+        public Vector3 CurrentPosition { get; set; }
+        
+        public Vector3 tankDirection;
+        double threshold;
+        Double orientation = 0;
+        public Vector3 velocity = Vector3.Backward * 50;
+        public float initialAngle;
+        public float currentAngle;
+        public float moveAngle;
+
+        Steering steer = new Steering(250f, 100f);
+        public float speed = 0;
+        public float destinationThreshold = 50f;
+        public Matrix translation = Matrix.Identity;
+        public Matrix rotation = Matrix.Identity;
+
+        //device and input property
+        ButtonState preMouseLeftButton = Mouse.GetState().LeftButton;
+        MousePicking mousePick;
+        public Vector3 PickPosition { get; set; }
         Camera camera;
 
-        Matrix translation = Matrix.Identity;
-        Matrix rotation = Matrix.Identity;
-        MousePicking mousePick;
+        //bounding box
+        public readonly Vector3 MIN = new Vector3(-40, 0, -40);
+        public readonly Vector3 MAX = new Vector3(40, 50, 40);
+        public Vector3 min;
+        public Vector3 max;
+        public BoundingBox tankBox;
+
+
+        //model
         ModelBone turretBone;
         ModelBone lbackwheelBone;
         ModelBone rbackwheelBone;
@@ -47,18 +70,15 @@ namespace Game1
 
 
         //键盘控制方向（新增）
-        float modelRotation = MathHelper.Pi;
-        double speedx, speedz;
+        //float modelRotation = MathHelper.Pi;
+        //double speedx, speedz;
 
 
         //float speedx, speedz;
         //Vector3 v = Vector3.Forward;
         //结束
 
-        Vector3 tankPosition = Vector3.Zero;
-        Vector3 tankDirection;
-        double threshold;
-        Double orientation = 0;
+        
         ButtonState prevMouseleftState = Mouse.GetState().LeftButton;
         public Tank(Model model, GraphicsDevice device, Camera camera)
             : base(model)
@@ -86,83 +106,88 @@ namespace Game1
             turretTransform = turretBone.Transform;
             hatchTransform = hatchgeo.Transform;
             canonTransform = canonBone.Transform;
-            rotation = Matrix.CreateRotationY(MathHelper.Pi);
+            //rotation = Matrix.CreateRotationY(MathHelper.Pi);
+
+            initialAngle = MathHelper.PiOver2;
+            //CurrentPosition = Vector3.Zero;
         }
 
         public override void Update(GameTime gameTime)
         {
             //Vector3? pickPosition = mousePick.GetCollisionPostion();
+            Vector3? pickPosition;
             turretRotationValue = (float)Math.Atan2(camera.cameraDirection.X, camera.cameraDirection.Z) + MathHelper.Pi;
             canonRotationValue = (float)Math.Atan2(camera.cameraDirection.Y,camera.cameraDirection.Z ) + MathHelper.Pi - MathHelper.Pi/180 *20;
             
-            float speed = 10;
+            //float speed = 10;
             float time = (gameTime.ElapsedGameTime.Milliseconds)/1000f;
             
-            //键盘移动
-            if (modelRotation >= (MathHelper.Pi * 2))
-            {
-                modelRotation = 0.0f;
-            }
-            if (modelRotation < 0)
-            {
-                modelRotation = (MathHelper.Pi * 2);
-            }
+            ////键盘移动
+            //if (modelRotation >= (MathHelper.Pi * 2))
+            //{
+            //    modelRotation = 0.0f;
+            //}
+            //if (modelRotation < 0)
+            //{
+            //    modelRotation = (MathHelper.Pi * 2);
+            //}
 
-            speedx = (Math.Sin(modelRotation)) * 3;
-            speedz = (Math.Cos(modelRotation)) * 3;
-            float speedxdouble, speedzdouble;
-            speedxdouble = (float)speedx;
-            speedzdouble = (float)speedz;
+            //speedx = (Math.Sin(modelRotation)) * 3;
+            //speedz = (Math.Cos(modelRotation)) * 3;
+            //float speedxdouble, speedzdouble;
+            //speedxdouble = (float)speedx;
+            //speedzdouble = (float)speedz;
 
 
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                tankPosition += Vector3.Forward * speedzdouble/4;
-                tankPosition += Vector3.Left * speedxdouble/4;
+            //if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            //{
+            //    currentPosition += Vector3.Forward * speedzdouble/4;
+            //    currentPosition += Vector3.Left * speedxdouble/4;
 
-                //translation *= Matrix.CreateTranslation(v*10);
-            }
+            //    //translation *= Matrix.CreateTranslation(v*10);
+            //}
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            {
-                tankPosition += Vector3.Backward * speedzdouble/4;
-                tankPosition += Vector3.Right * speedxdouble/4;
+            //if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            //{
+            //    currentPosition += Vector3.Backward * speedzdouble/4;
+            //    currentPosition += Vector3.Right * speedxdouble/4;
 
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                //speedx =(float) Math.Sin(MathHelper.PiOver4 / 180);
-                //speedz= (float) Math.Cos(MathHelper.PiOver4 / 180);
-                //v = new Vector3(speedx, 0f,speedz);
-                //v.Normalize();
-                //rotation *= Matrix.CreateRotationY(MathHelper.PiOver4 / 180);
-                modelRotation += 10 * MathHelper.ToRadians(0.1f);
-                rotation = Matrix.CreateRotationY(modelRotation);
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                modelRotation -= 10 * MathHelper.ToRadians(0.1f);
-                rotation = Matrix.CreateRotationY(modelRotation);
+            //}
+            //if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            //{
+            //    //speedx =(float) Math.Sin(MathHelper.PiOver4 / 180);
+            //    //speedz= (float) Math.Cos(MathHelper.PiOver4 / 180);
+            //    //v = new Vector3(speedx, 0f,speedz);
+            //    //v.Normalize();
+            //    //rotation *= Matrix.CreateRotationY(MathHelper.PiOver4 / 180);
+            //    modelRotation += 10 * MathHelper.ToRadians(0.1f);
+            //    rotation = Matrix.CreateRotationY(modelRotation);
+            //}
+            //if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            //{
+            //    modelRotation -= 10 * MathHelper.ToRadians(0.1f);
+            //    rotation = Matrix.CreateRotationY(modelRotation);
 
-            }
+            //}
 
             //鼠标移动
-            //if (prevMouseleftState == ButtonState.Pressed && mousePick.GetCollisionPosition().HasValue == true)
-            //{
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && mousePick.GetCollisionPosition().HasValue == true)
+            {
+                //pickPosition = mousePick.GetCollisionPosition();
 
+                //if (pickPosition.HasValue == true)
+                //{
+                PickPosition = mousePick.GetCollisionPosition().Value;
+                    //tankDirection = mousePick.GetCollisionPosition().Value - currentPosition;
+                    //tankDirection.Normalize();
 
-            //    pickPosition = mousePick.GetCollisionPosition().Value;
-
-            //    tankDirection = mousePick.GetCollisionPosition().Value - tankPosition;
-            //    tankDirection.Normalize();
-
-
-            //    //translation = Matrix.CreateTranslation(pickPosition.Value);
-            //    //translation.Translation = pickPosition.Value;
-            //}
-            threshold = Math.Pow((pickPosition.Z - tankPosition.Z),2)+Math.Pow((pickPosition.X - tankPosition.X),2);
-            if ((threshold>1) && (Mouse.GetState().LeftButton == ButtonState.Released))
+                //}
+            }
+            //threshold = Math.Pow((PickPosition.Z - currentPosition.Z),2)+Math.Pow((PickPosition.X - currentPosition.X),2);
+            float distance = Vector3.Distance(PickPosition, CurrentPosition);
+            //if ((threshold>1) && (Mouse.GetState().LeftButton == ButtonState.Released))
+            if(distance > destinationThreshold)
             {
                 //tankPosition += speed * tankDirection * time;移动代码，放在旋转后面
                 //translation = Matrix.CreateTranslation(tankPosition);
@@ -170,34 +195,42 @@ namespace Game1
                 //lbackwheelBone.Transform = Matrix.CreateTranslation(0, lbackwheelBone.Parent.ModelTransform.Translation.Y, lbackwheelBone.Parent.ModelTransform.Translation.Z);
 
                 //this.rotateWheel();
-                Double newOrientation = Math.Atan2(tankDirection.X, tankDirection.Z);
-                    float rotateDirection;
-                    float rotationalSpeed = MathHelper.PiOver4;
+                speed = velocity.Length();
+                currentAngle = (float)Math.Atan2(velocity.Z, velocity.X);
+                moveAngle = currentAngle - initialAngle;
+                rotation = Matrix.CreateRotationY(-moveAngle);
+                //Double newOrientation = Math.Atan2(tankDirection.X, tankDirection.Z);
+                //    float rotateDirection;
+                //    float rotationalSpeed = MathHelper.PiOver4;
                     
                     wheelRotationValue = (float)gameTime.TotalGameTime.TotalSeconds * speed;
                     //canonRotationValue = (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 0.25f) * 0.333f - 0.333f;
                     hatchRotationValue = MathHelper.Clamp((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 2) * 2, -1, 0);
-                    if (newOrientation > orientation)
-                        rotateDirection = 1;
-                    else
-                        rotateDirection = -1;
+                    //if (newOrientation > orientation)
+                    //    rotateDirection = 1;
+                    //else
+                    //    rotateDirection = -1;
 
-                    float rotationalVelocity = rotationalSpeed * rotateDirection;
-                    float rotateAngel = rotationalVelocity * time;
-                    
-                    Double orientationThreshold = MathHelper.PiOver4 / 45;
-                    if (Math.Abs(newOrientation - orientation) > orientationThreshold)
-                    {
-                        orientation += rotateAngel;
-                        rotation *= Matrix.CreateRotationY(rotateAngel);
+                    velocity += steer.seek(PickPosition, CurrentPosition, velocity) * time;
+                    CurrentPosition += velocity * time;
+                    translation = Matrix.CreateTranslation(CurrentPosition);
 
-                    }
-                    else
-                    {
+                    //float rotationalVelocity = rotationalSpeed * rotateDirection;
+                    //float rotateAngel = rotationalVelocity * time;
                     
-                        tankPosition += speed * tankDirection * time;
-                        translation = Matrix.CreateTranslation(tankPosition);
-                    }
+                    //Double orientationThreshold = MathHelper.PiOver4 / 45;
+                    //if (Math.Abs(newOrientation - orientation) > orientationThreshold)
+                    //{
+                    //    orientation += rotateAngel;
+                    //    rotation *= Matrix.CreateRotationY(rotateAngel);
+
+                    //}
+                    //else
+                    //{
+                    
+                    //    currentPosition += speed * tankDirection * time;
+                    //    translation = Matrix.CreateTranslation(currentPosition);
+                    //}
                     
             }
 
