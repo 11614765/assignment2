@@ -7,7 +7,7 @@ using System;
 namespace Game1
 {
     /// <summary>
-    /// This is the main type for your game.宋江
+    /// This is the main type for your game.
     /// </summary>
     public class Game1 : Game
     {
@@ -149,7 +149,7 @@ namespace Game1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            camera.cameraPosition = modelManager.tankCurrentPosition + (new Vector3(camera.cameraDirection.X, 60, camera.cameraDirection.Z +60));
+            //camera.cameraPosition = modelManager.tankCurrentPosition + (new Vector3(camera.cameraDirection.X, 60, camera.cameraDirection.Z +60));
 
 
             // TODO: Add your update logic here

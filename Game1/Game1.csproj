@@ -45,9 +45,11 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Gronud.cs" />
     <Compile Include="LevelInfo.cs" />
+    <Compile Include="Map.cs" />
     <Compile Include="ModelManager.cs" />
     <Compile Include="MousePickForword.cs" />
     <Compile Include="MousePicking.cs" />
+    <Compile Include="PathFinder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quadtree.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="Tank.cs" />
     <Compile Include="Tank1.cs" />
     <Compile Include="TankEnemy.cs" />
+    <Compile Include="Wallstone.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -124,6 +127,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Models\Tank\ammo.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Models\Obstacle\stone.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Models\Obstacle\Stone_Sandstone.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Models\Obstacle\Stone_Sandstone_0.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Models\Obstacle\wall.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Models\Obstacle\wallmodel.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Models\Obstacle\wall_0.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Content\Models\Tank\engine_diff_tex.tga" />

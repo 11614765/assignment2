@@ -27,9 +27,14 @@ namespace Game1
         }
 
         
-
+        //model define
         Ground ground;
         Tank tank;
+        //List<Wallstone> wallstone = new List<Wallstone>();
+        Wallstone[] wallstone;
+
+        Map map;
+        Pathfinder pathfinder;
         public Vector3 tankCurrentPosition { get { return tank.CurrentPosition; } }
 
 
@@ -51,7 +56,9 @@ namespace Game1
 
         public ModelManager(Game game) : base(game) 
         {
-            
+            map = new Map();
+            pathfinder = new Pathfinder(map);
+            wallstone = new Wallstone[map.barrierList.Count];
             //tank1 = new Tank1(Game.Content.Load<Model>(@"Models/Tank/tank"), ((Game1)Game).GraphicsDevice,
             //   ((Game1)Game).camera);
             levelInfoList.Add(new LevelInfo(10,100,5,2,21,10));
@@ -88,6 +95,13 @@ namespace Game1
                    Game.Content.Load<Model>(@"Models/Skybox/skybox")));
             tank = new Tank(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
 
+            for (int i = 0; i < wallstone.Length; i++)
+            {
+                Vector3 stoneposition = map.MapToWorld(map.barrierList[i], true);
+                //wallstone.Add(new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition));
+                wallstone[i] = new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition);
+                models.Add(wallstone[i]);
+            }
             
             base.Initialize();
             
@@ -99,7 +113,11 @@ namespace Game1
             models.Add(ground);
             //models.Add(new SkyBox(Game.Content.Load<Model>(@"Models/SkyBox/skybox")));
             models.Add(tank);
-           
+
+            //foreach (BasicModel wallstonemodel in wallstone)
+            //{
+            //    models.Add(wallstonemodel);
+            //}
             base.LoadContent();
         }
         private void SpawnEnemy()
@@ -208,7 +226,7 @@ namespace Game1
             updateShots(gameTime);
 
 
-            base.Update(gameTime);
+            base. Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
         {
@@ -227,6 +245,7 @@ namespace Game1
                 model.Draw(((Game1)Game).device, ((Game1)Game).camera);
 
             }
+
             base.Draw(gameTime);
         }
 
