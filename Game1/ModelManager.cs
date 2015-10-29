@@ -162,9 +162,16 @@ namespace Game1
             
             CheckToSpawnEnemy(gameTime);
             UpdateModels(gameTime);
-            
-            
-            //vincent
+
+            //Quadtree is use for reduce cpu time in relation to 
+            //the collisions between bullets and enemy tanks
+            int worldSize = 1200;
+            int maxDepth = 7;
+            int maxNodeObject = 5;
+            Point center = new Point(0, 0);
+            Quadtree quadtree_bulletEnemy = new Quadtree (worldSize,maxDepth,maxNodeObject,center);
+
+
             foreach (BasicModel model in models)
             {
                 model.Update(gameTime);
@@ -176,29 +183,43 @@ namespace Game1
 
             foreach (BasicModel model in bullets)
             {
+                quadtree_bulletEnemy.Add(model);
                 model.Update(gameTime);
             }
 
 
             foreach (BasicModel model in enemies)
             {
-                if(model.CollidesWith(tank.model,tank.world))
-                {
-                    
-                    ((Game1)Game).reduceHealth();
-                    
-                }
+                
                 model.Update(gameTime);
             }
 
             for (int i = 0;i< enemies.Count;i++)
             {
+                float x= enemies[i].world.Translation.X;
+                float y = enemies[i].world.Translation.Y;
+
+                //Enemies collides with player (player health -)
                 if (enemies[i].CollidesWith(tank.model,tank.world))
                 {
                     enemies.RemoveAt(i);
                     ((Game1)Game).kill();
                    --i;
                     ((Game1)Game).reduceHealth();
+                }
+
+                Quadtree temp = quadtree_bulletEnemy.GetNodeContaining(x, y);
+                foreach (BasicModel bullet in temp.models)
+                {
+                    if (enemies[i].CollidesWith(bullet.model, bullet.world))
+                    {
+                        ((Game1)Game).soundHit.Play();
+                        ((Game1)Game).AddPoints();
+
+                        enemies.RemoveAt(i);
+                        bullets.Remove(bullet);
+
+                    }
                 }
             }
 
@@ -250,21 +271,21 @@ namespace Game1
                     bullets.RemoveAt(i);
                     i--;
                 }
-                else
-                {
-                    for (int j = 0; j <enemies.Count; j++)
-                    {
-                        if (bullets[i].CollidesWith(enemies[j].model, enemies[j].world))
-                        {
-                            ((Game1)Game).soundHit.Play();
-                            ((Game1)Game).AddPoints();
+                //else
+                //{
+                //    for (int j = 0; j <enemies.Count; j++)
+                //    {
+                //        if (bullets[i].CollidesWith(enemies[j].model, enemies[j].world))
+                //        {
+                //            ((Game1)Game).soundHit.Play();
+                //            ((Game1)Game).AddPoints();
                     
-                            enemies.RemoveAt(j);
-                            bullets.RemoveAt(i);
-                            break;
-                        }
-                    }
-                }
+                //            enemies.RemoveAt(j);
+                //            bullets.RemoveAt(i);
+                //            break;
+                //        }
+                //    }
+                //}
             }
 
 
