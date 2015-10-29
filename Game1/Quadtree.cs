@@ -92,9 +92,9 @@ namespace Game1
                     
                 }
                 this.models.Clear();
-                foreach (BasicModel tempmodels  in tempModel)
+                foreach (BasicModel models  in tempModel)
                 {
-                    Add(tempmodels);
+                    Add(models);
                 }
                
                 return Add(obj, objCenter);

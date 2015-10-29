@@ -10,7 +10,7 @@ namespace Game1
 {
     class Tank : BasicModel
     {
-        //tank property define
+        // tank property define
         public Vector3 CurrentPosition { get; set; }
         
         public Vector3 tankDirection;
@@ -21,7 +21,7 @@ namespace Game1
         public float currentAngle;
         public float moveAngle;
 
-        Steering steer = new Steering(250f, 100f);
+        Steering steer = new Steering(500f, 100f);
         public float speed = 0;
         public float destinationThreshold = 50f;
         public Matrix translation = Matrix.Identity;
