@@ -10,8 +10,8 @@ namespace Game1
     class Quadtree
     {
         static int childCount = 4;
-        int maxObjectCount = 3;
-        int maxDepth;
+        int maxObjectCount = 7;
+        int maxDepth= 5;
 
         private Quadtree nodeParent;
         private Quadtree[] childNodes;
@@ -66,6 +66,12 @@ namespace Game1
         {
             //This world has been divided into sub-worlds
             //Find the sub-world it belongs to.
+
+            //--------
+            //| 0|1 |
+            //-------
+            //| 2|3 |
+            //-------
             if (this.childNodes != null)
             {
                 int index = (objCenter.X < this.nodeCenter.X ? 0 : 1)
@@ -79,11 +85,18 @@ namespace Game1
             if (this.currentDepth < maxDepth && this.models.Count + 1 > maxObjectCount)
             {
                 Split((int)nodeSize);
+                List<BasicModel> tempModel = new List<BasicModel>();
                 foreach (BasicModel nodeModel in models)
                 {
-                    Add(nodeModel);
+                    tempModel.Add(nodeModel);
+                    
                 }
                 this.models.Clear();
+                foreach (BasicModel models  in tempModel)
+                {
+                    Add(models);
+                }
+               
                 return Add(obj, objCenter);
             }
 

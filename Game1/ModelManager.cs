@@ -161,7 +161,7 @@ namespace Game1
         {
             
             CheckToSpawnEnemy(gameTime);
-            UpdateModels(gameTime);
+            //UpdateModels(gameTime);
 
             //Quadtree is use for reduce cpu time in relation to 
             //the collisions between bullets and enemy tanks
@@ -186,7 +186,7 @@ namespace Game1
                 quadtree_bulletEnemy.Add(model);
                 model.Update(gameTime);
             }
-
+                
 
             foreach (BasicModel model in enemies)
             {
@@ -194,31 +194,37 @@ namespace Game1
                 model.Update(gameTime);
             }
 
-            for (int i = 0;i< enemies.Count;i++)
-            {
-                float x= enemies[i].world.Translation.X;
-                float y = enemies[i].world.Translation.Y;
 
-                //Enemies collides with player (player health -)
-                if (enemies[i].CollidesWith(tank.model,tank.world))
+            for(int i = 0; i<enemies.Count;i ++)
+            {
+                if (enemies[i].CollidesWith(tank.model, tank.world))
                 {
                     enemies.RemoveAt(i);
                     ((Game1)Game).kill();
-                   --i;
+                    --i;
                     ((Game1)Game).reduceHealth();
+                    break;
                 }
+            }
 
+            for (int i = 0;i< enemies.Count;i++)
+            {
+                float x= enemies[i].world.Translation.X;
+                float y = enemies[i].world.Translation.Z;
+                //Enemies collides with player (player health -)
                 Quadtree temp = quadtree_bulletEnemy.GetNodeContaining(x, y);
+
                 foreach (BasicModel bullet in temp.models)
                 {
                     if (enemies[i].CollidesWith(bullet.model, bullet.world))
                     {
                         ((Game1)Game).soundHit.Play();
                         ((Game1)Game).AddPoints();
-
+                        
                         enemies.RemoveAt(i);
                         bullets.Remove(bullet);
-
+                        --i;
+                        break;
                     }
                 }
             }

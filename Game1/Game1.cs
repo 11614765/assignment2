@@ -150,7 +150,7 @@ namespace Game1
                 Exit();
 
             //camera.cameraPosition = modelManager.tankCurrentPosition + (new Vector3(camera.cameraDirection.X, 60, camera.cameraDirection.Z +60));
-
+      
 
             // TODO: Add your update logic here
             if (shotCountdown <= 0)
@@ -168,7 +168,7 @@ namespace Game1
                     {
                         modelManager.AddBullets(pickpos.Value);
                         soundShot.Play();
-                        shotCountdown = 500;
+                        shotCountdown = 10;
                     }
                 }
             }
