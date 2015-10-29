@@ -47,7 +47,6 @@
     <Compile Include="LevelInfo.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="ModelManager.cs" />
-    <Compile Include="MousePickForword.cs" />
     <Compile Include="MousePicking.cs" />
     <Compile Include="Pathfinder.cs" />
     <Compile Include="Program.cs" />
