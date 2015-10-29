@@ -36,7 +36,7 @@ namespace Game1
         GameState currentGameState = GameState.START;
 
         //新加代码end---------------
-      
+
 
         MousePicking mousePick;
 
@@ -98,6 +98,8 @@ namespace Game1
         /// </summary>
         protected override void LoadContent()
         {
+
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             device = graphics.GraphicsDevice;
@@ -168,7 +170,7 @@ namespace Game1
                     {
                         modelManager.AddBullets(pickpos.Value);
                         soundShot.Play();
-                        shotCountdown = 10;
+                        shotCountdown = 500;
                     }
                 }
             }
