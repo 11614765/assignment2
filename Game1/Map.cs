@@ -15,7 +15,7 @@ namespace Game1
         Exit
     }
     #endregion
-    class Map
+    public class Map
     {
         // Map data
         //private List<MapData> maps;

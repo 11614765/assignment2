@@ -149,7 +149,7 @@ namespace Game1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            camera.cameraPosition = modelManager.tankCurrentPosition + (new Vector3(camera.cameraDirection.X, 60, camera.cameraDirection.Z +60));
+            //camera.cameraPosition = modelManager.tankCurrentPosition + (new Vector3(camera.cameraDirection.X, 60, camera.cameraDirection.Z +60));
 
 
             // TODO: Add your update logic here
