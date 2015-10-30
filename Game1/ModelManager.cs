@@ -159,7 +159,7 @@ namespace Game1
                             Vector3 humPosition = new Vector3(((Game1)Game).rnd.Next(-2000, (int)maxSpawnLocation.X),
                                 0,
                                 ((Game1)Game).rnd.Next((int)maxSpawnLocation.Z, -100));
-                            enemies.Add(new Human(Game.Content.Load<Model>(@"Models/Tank/anna"), humPosition, tank, 20));
+                            enemies.Add(new Human(Game.Content.Load<Model>(@"Models/Tank/anna"), humPosition, tank, 3));
 
                         }
                     }
@@ -231,7 +231,11 @@ namespace Game1
                 {
                     if (enemies[i] is Human)
                     {
-
+                        enemies.RemoveAt(i);
+                        
+                        --i;
+                        ((Game1)Game).reduceHealth();
+                        break;
                     }
                     else
                     {
@@ -256,8 +260,14 @@ namespace Game1
                     if (enemies[i].CollidesWith(bullet.model, bullet.world))
                     {
                         ((Game1)Game).soundHit.Play();
-                        ((Game1)Game).AddPoints();
-                        
+                        if (enemies[i] is Human)
+                        {
+                            ((Game1)Game).DeductPoints();
+                        }
+                        else
+                        {
+                            ((Game1)Game).AddPoints();
+                        }
                         enemies.RemoveAt(i);
                         bullets.Remove(bullet);
                         --i;
@@ -316,9 +326,8 @@ namespace Game1
             {
                 bullets[i].Update(gameTime);
 
-                if (bullets[i].world.Translation.X > 5000 || bullets[i].world.Translation.Y > 5000 || bullets[i].world.Translation.Z > 5000||
-                    bullets[i].world.Translation.X < -5000 || bullets[i].world.Translation.Y < -100 || bullets[i].world.Translation.X < -5000
-                    )
+                if (bullets[i].world.Translation.X > 600 || bullets[i].world.Translation.Z > 600||
+                    bullets[i].world.Translation.X < -600 || bullets[i].world.Translation.X < -600)
                 {
                     bullets.RemoveAt(i);
                     i--;

@@ -15,7 +15,7 @@ namespace Game1
 
         Vector3 traget;
         Vector3 velocity;
-        Matrix scale = Matrix.CreateScale(.1f);
+        Matrix scale = Matrix.CreateScale(.05f);
         Matrix translate;
         public Bullet(Model model, Vector3 pos, Vector3 target)
             : base(model)
@@ -34,7 +34,7 @@ namespace Game1
 
         public override void Update(GameTime gameTime)
         {
-            translate *= Matrix.CreateTranslation(velocity * gameTime.ElapsedGameTime.Milliseconds/100);
+            translate *= Matrix.CreateTranslation(velocity * gameTime.ElapsedGameTime.Milliseconds/3);
             base.Update(gameTime);
         }
         protected override Matrix GetWorld()
