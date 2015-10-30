@@ -48,11 +48,12 @@ namespace Game1
         protected Tank1 tank1;
         public List<LevelInfo> levelInfoList = new List<LevelInfo>();
         List<BasicModel> models = new List<BasicModel>();
-
-        Game game;
+        List<BasicModel> obstacles = new List<BasicModel>();
+        List<BasicModel> enemies = new List<BasicModel>();
         public List<BasicModel> bullets = new List<BasicModel>();
 
-        List<BasicModel> enemies = new List<BasicModel>();
+        Game game;
+
 
         public ModelManager(Game game) : base(game) 
         {
@@ -61,21 +62,21 @@ namespace Game1
             wallstone = new Wallstone[map.barrierList.Count];
             //tank1 = new Tank1(Game.Content.Load<Model>(@"Models/Tank/tank"), ((Game1)Game).GraphicsDevice,
             //   ((Game1)Game).camera);
-            levelInfoList.Add(new LevelInfo(10,100,5,2,21,10));
-            levelInfoList.Add(new LevelInfo(900,2800,10,3,6,9));
-            levelInfoList.Add(new LevelInfo(800, 2600, 15, 4, 6, 8));
-            levelInfoList.Add(new LevelInfo(700, 2400,20, 5, 7, 7));
-            levelInfoList.Add(new LevelInfo(600, 2200, 25, 6, 7, 6));
-            levelInfoList.Add(new LevelInfo(500, 2000, 30, 7, 7, 5));
-            levelInfoList.Add(new LevelInfo(400, 1800, 35, 8, 7, 4));
-            levelInfoList.Add(new LevelInfo(300, 1600, 40, 8, 8, 3));
-            levelInfoList.Add(new LevelInfo(200, 1400, 45, 8, 8, 2));
-            levelInfoList.Add(new LevelInfo(100, 1200, 55, 8, 9, 1));
-            levelInfoList.Add(new LevelInfo(50, 1000, 60, 8, 9, 0));
-            levelInfoList.Add(new LevelInfo(50, 800, 65,8, 9, 0));
-            levelInfoList.Add(new LevelInfo(50, 600, 70, 8, 10, 0));
-            levelInfoList.Add(new LevelInfo(25, 400, 75, 8, 10, 0));
-            levelInfoList.Add(new LevelInfo(0, 200, 80, 8, 20, 0));
+            levelInfoList.Add(new LevelInfo(10,100,5,2,21,10,2));
+            levelInfoList.Add(new LevelInfo(900,2800,10,3,6,9,2));
+            levelInfoList.Add(new LevelInfo(800, 2600, 15, 4, 6, 8,3));
+            levelInfoList.Add(new LevelInfo(700, 2400,20, 5, 7, 7,3));
+            levelInfoList.Add(new LevelInfo(600, 2200, 25, 6, 7, 6,4));
+            levelInfoList.Add(new LevelInfo(500, 2000, 30, 7, 7, 5,4));
+            levelInfoList.Add(new LevelInfo(400, 1800, 35, 8, 7, 4,5));
+            levelInfoList.Add(new LevelInfo(300, 1600, 40, 8, 8, 3,5));
+            levelInfoList.Add(new LevelInfo(200, 1400, 45, 8, 8, 2,5));
+            levelInfoList.Add(new LevelInfo(100, 1200, 55, 8, 9, 1,6));
+            levelInfoList.Add(new LevelInfo(50, 1000, 60, 8, 9, 0,6));
+            levelInfoList.Add(new LevelInfo(50, 800, 65,8, 9, 0,6));
+            levelInfoList.Add(new LevelInfo(50, 600, 70, 8, 10, 0,6));
+            levelInfoList.Add(new LevelInfo(25, 400, 75, 8, 10, 0,6));
+            levelInfoList.Add(new LevelInfo(0, 200, 80, 8, 20, 0,6));
             this.game = game;
            
            
@@ -100,9 +101,21 @@ namespace Game1
                 Vector3 stoneposition = map.MapToWorld(map.barrierList[i], true);
                 //wallstone.Add(new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition));
                 wallstone[i] = new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition);
-                models.Add(wallstone[i]);
+                obstacles.Add(wallstone[i]);
             }
-            
+   
+            for(int x=0; x<12; x++)
+            {
+                for (int y = 0; y < 12; y++)
+                {
+                    if (y == 0 ||x==0 || y==11||x==11)
+                    { 
+                        AddWall(-600 + y * 100, -600 + x * 100);
+                    }
+                }
+            }
+
+
             base.Initialize();
             
         }
@@ -139,6 +152,17 @@ namespace Game1
                 timeSinceLastSpawn += gameTime.ElapsedGameTime.Milliseconds;
                 if (timeSinceLastSpawn > nextSpanwTime)
                 {
+                    if (enemyThisLevel == 0)
+                    {
+                        for (int i=0; i<levelInfoList[currentLevel].numHuman; i++)
+                        {
+                            Vector3 humPosition = new Vector3(((Game1)Game).rnd.Next(-2000, (int)maxSpawnLocation.X),
+                                0,
+                                ((Game1)Game).rnd.Next((int)maxSpawnLocation.Z, -100));
+                            enemies.Add(new Human(Game.Content.Load<Model>(@"Models/Tank/anna"), humPosition, tank, 20));
+
+                        }
+                    }
                     SpawnEnemy();
                 }
             
@@ -186,7 +210,13 @@ namespace Game1
                 quadtree_bulletEnemy.Add(model);
                 model.Update(gameTime);
             }
-                
+
+
+            foreach (BasicModel model in obstacles)
+            {
+
+                model.Update(gameTime);
+            }
 
             foreach (BasicModel model in enemies)
             {
@@ -199,11 +229,18 @@ namespace Game1
             {
                 if (enemies[i].CollidesWith(tank.model, tank.world))
                 {
-                    enemies.RemoveAt(i);
-                    ((Game1)Game).kill();
-                    --i;
-                    ((Game1)Game).reduceHealth();
-                    break;
+                    if (enemies[i] is Human)
+                    {
+
+                    }
+                    else
+                    {
+                        enemies.RemoveAt(i);
+                        ((Game1)Game).kill();
+                        --i;
+                        ((Game1)Game).reduceHealth();
+                        break;
+                    }
                 }
             }
 
@@ -232,7 +269,7 @@ namespace Game1
             updateShots(gameTime);
 
 
-            base. Update(gameTime);
+            base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
         {
@@ -251,6 +288,11 @@ namespace Game1
                 model.Draw(((Game1)Game).device, ((Game1)Game).camera);
 
             }
+            foreach (BasicModel model in obstacles)
+            {
+                model.Draw(((Game1)Game).device, ((Game1)Game).camera);
+
+            }
 
             base.Draw(gameTime);
         }
@@ -261,6 +303,10 @@ namespace Game1
             bullets.Add(new Bullet
                 (Game.Content.Load<Model>((@"Models/Tank/tank")),
                 tank.world.Translation, target));
+        }
+        public void AddWall(int x, int y)
+        {
+            obstacles.Add(new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), new Vector3(x,0,y)));
         }
 
 

@@ -170,7 +170,7 @@ namespace Game1
                     {
                         modelManager.AddBullets(pickpos.Value);
                         soundShot.Play();
-                        shotCountdown = 500;
+                        shotCountdown = 10;
                     }
                 }
             }

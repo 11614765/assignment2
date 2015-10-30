@@ -13,7 +13,8 @@ namespace Game1
         public int minSpeed { get; protected set; }
         public int maxSpeed { get; protected set; }
         public int missAllowed { get; protected set; }
-        public LevelInfo(int minSpawnTime, int maxSpawnTime, int numberEnemies, int minSpeed, int maxSpeed, int missAllowed) 
+        public int numHuman { get; protected set; }
+        public LevelInfo(int minSpawnTime, int maxSpawnTime, int numberEnemies, int minSpeed, int maxSpeed, int missAllowed,int numHuman) 
         {
             this.minSpawnTime = minSpawnTime;
             this.maxSpawnTime = maxSpawnTime;
@@ -21,6 +22,7 @@ namespace Game1
             this.minSpeed = minSpeed;
             this.maxSpeed = maxSpeed;
             this.missAllowed = missAllowed;
+            this.numHuman = numHuman;
         }
     }
 }

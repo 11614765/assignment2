@@ -122,7 +122,7 @@ namespace Game1
             this.childNodes[3] = new Quadtree(parentSize / 2, depth, this.nodeCenter + new Point(quarter, quarter), this);
         }
 
-
+        //Input the position to find objects in the same sub-world
         public Quadtree GetNodeContaining(float x, float y)
         {
             if (this.childNodes != null)
