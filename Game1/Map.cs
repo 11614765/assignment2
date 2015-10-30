@@ -68,10 +68,10 @@ namespace Game1
                 groundPosition.X = column * tileSize - 1200;
                 groundPosition.Y = 0;
                 groundPosition.Z = row * tileSize - 1200;
-                if (centered)
-                {
-                    groundPosition += tileCenter;
-                }
+                //if (centered)
+                //{
+                //    groundPosition += tileCenter;
+                //}
             }
             else
             {
@@ -131,7 +131,7 @@ namespace Game1
         /// </summary>
         /// <param name="column">column position(x)</param>
         /// <param name="row">row position(y)</param>
-        private bool InMap(int column, int row)
+        public bool InMap(int column, int row)
         {
             return (row >= 0 && row < numberRows &&
                 column >= 0 && column < numberColumns);

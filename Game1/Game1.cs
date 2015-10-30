@@ -22,7 +22,7 @@ namespace Game1
         //score
         SplashScreen splashScreen;
         int score = 0;
-        int health =3;
+        int health =13;
         int Health
         {
             get; set;
@@ -36,7 +36,7 @@ namespace Game1
         GameState currentGameState = GameState.START;
 
         //新加代码end---------------
-
+      
 
         MousePicking mousePick;
 
@@ -98,8 +98,6 @@ namespace Game1
         /// </summary>
         protected override void LoadContent()
         {
-
-
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             device = graphics.GraphicsDevice;
@@ -170,7 +168,7 @@ namespace Game1
                     {
                         modelManager.AddBullets(pickpos.Value);
                         soundShot.Play();
-                        shotCountdown = 500;
+                        shotCountdown = 10;
                     }
                 }
             }
@@ -208,7 +206,10 @@ namespace Game1
         protected override void Draw(GameTime gameTime)
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue);蓝色界面
-
+            //LineBatch.DrawLine(_spriteBatch,
+            //              Color.Black,
+            //              Vector2.Zero,
+            //              new Vector2(100, 300));
 
             // UI界面
             device.DepthStencilState = DepthStencilState.Default;
@@ -223,7 +224,9 @@ namespace Game1
 
             string message1 = "mousePosition:" + modelManager.PickPosition;
             string message2 = "currentPosition:" + modelManager.CurrentPosition;
-
+            //string message3 = "count:" + modelManager.count.ToString();
+            //string message4 = "pick:" + modelManager.cur.ToString();
+            //string message5 = "cur:" + modelManager.pos.ToString();
 
             Vector2 textOrigin = scoreFont.MeasureString(message1) / 2;
             const float textSize = 0.2f;
@@ -243,6 +246,9 @@ namespace Game1
             spriteBatch.DrawString(scoreFont, scoreText, new Vector2(0, 0), Color.Red); 
             //spriteBatch.DrawString(scoreFont, scoreText, new Vector2(0, 0), Color.Red);
             //spriteBatch.DrawString(scoreFont, scoreText, new Vector2(0, 0), Color.Red);
+            //spriteBatch.DrawString(font, message3, new Vector2(20, 40), Color.Red);
+            //spriteBatch.DrawString(font, message4, new Vector2(20, 60), Color.Red);
+            //spriteBatch.DrawString(font, message5, new Vector2(20, 80), Color.Red);
 
             spriteBatch.End();
             

@@ -30,13 +30,18 @@ namespace Game1
         //model define
         Ground ground;
         Tank tank;
-        //List<Wallstone> wallstone = new List<Wallstone>();
+        PursuitEnemy pursuitenemy;
+        List<Wallstone> pathtrack = new List<Wallstone>();
         Wallstone[] wallstone;
 
         Map map;
         Pathfinder pathfinder;
         public Vector3 tankCurrentPosition { get { return tank.CurrentPosition; } }
 
+        //debug parameter
+        public int count;
+        public string cur;
+        public string pos;
 
         Vector3 maxSpawnLocation = new Vector3(100, 0, -3000);
         int nextSpanwTime = 0;
@@ -94,15 +99,14 @@ namespace Game1
             models.Add(new SkyBox(
                    Game.Content.Load<Model>(@"Models/Skybox/skybox")));
             tank = new Tank(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
-
+            pursuitenemy = new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
             for (int i = 0; i < wallstone.Length; i++)
             {
                 Vector3 stoneposition = map.MapToWorld(map.barrierList[i], true);
-                //wallstone.Add(new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition));
                 wallstone[i] = new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition);
                 models.Add(wallstone[i]);
             }
-            
+
             base.Initialize();
             
         }
@@ -113,6 +117,8 @@ namespace Game1
             models.Add(ground);
             //models.Add(new SkyBox(Game.Content.Load<Model>(@"Models/SkyBox/skybox")));
             models.Add(tank);
+            models.Add(pursuitenemy);
+            pursuitenemy.TargetPlayer(tank);
 
             //foreach (BasicModel wallstonemodel in wallstone)
             //{
@@ -170,6 +176,22 @@ namespace Game1
             int maxNodeObject = 5;
             Point center = new Point(0, 0);
             Quadtree quadtree_bulletEnemy = new Quadtree (worldSize,maxDepth,maxNodeObject,center);
+
+            //if (pursuitenemy.pathdebug != null)
+            //{
+            //    foreach (Vector3 track in pursuitenemy.pathdebug)
+            //    {
+            //        pathtrack.Add(new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), track));
+
+            //    }
+            //    pursuitenemy.pathdebug = null;
+            //    foreach (BasicModel track in pathtrack)
+            //    {
+            //        models.Add(track);
+            //    }
+            //    pathtrack.Clear();
+
+            //}
 
 
             foreach (BasicModel model in models)
