@@ -21,9 +21,9 @@ namespace Game1
         public float currentAngle;
         public float moveAngle;
 
-        Steering steer = new Steering(500f, 100f);
+        public Steering steer = new Steering(300f, 100f);
         public float speed = 0;
-        public float destinationThreshold = 50f;
+        public const float destinationThreshold = 50f;
         public Matrix translation = Matrix.Identity;
         public Matrix rotation = Matrix.Identity;
 
@@ -62,11 +62,11 @@ namespace Game1
         Matrix canonTransform;
         Matrix hatchTransform;
 
-        float wheelRotationValue;
+        public float wheelRotationValue;
         //float steerRotationValue;
-        float hatchRotationValue;
-        float canonRotationValue;
-        float turretRotationValue;
+        public float hatchRotationValue;
+        public float canonRotationValue;
+        public float turretRotationValue;
 
 
         //键盘控制方向（新增）
@@ -109,6 +109,7 @@ namespace Game1
             //rotation = Matrix.CreateRotationY(MathHelper.Pi);
 
             initialAngle = MathHelper.PiOver2;
+            //tankBox = new BoundingBox(MIN, MAX);
             //CurrentPosition = Vector3.Zero;
         }
 
@@ -116,6 +117,10 @@ namespace Game1
         {
             //Vector3? pickPosition = mousePick.GetCollisionPostion();
             Vector3? pickPosition;
+            //min = MIN + CurrentPosition;
+            //max = MAX + CurrentPosition;
+            //tankBox = new BoundingBox(min, max);
+
             turretRotationValue = (float)Math.Atan2(camera.cameraDirection.X, camera.cameraDirection.Z) + MathHelper.Pi;
             canonRotationValue = (float)Math.Atan2(camera.cameraDirection.Y,camera.cameraDirection.Z ) + MathHelper.Pi - MathHelper.Pi/180 *20;
             
