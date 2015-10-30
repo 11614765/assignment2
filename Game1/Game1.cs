@@ -170,7 +170,7 @@ namespace Game1
                     {
                         modelManager.AddBullets(pickpos.Value);
                         soundShot.Play();
-                        shotCountdown = 10;
+                        shotCountdown = 500;
                     }
                 }
             }
@@ -193,6 +193,7 @@ namespace Game1
                 else
                 {
                     ChangeGameState(GameState.LEVEL_CHANGE, level++);
+                    modelManager.enemyThisLevel = 0; 
                     modelManager.currentLevel++;
                     modelManager.SetNextSpawnTime();
                 }
@@ -302,7 +303,7 @@ namespace Game1
         {
             //score += points;
             score--;
-            killed++;
+        
         }
 
         public void kill()

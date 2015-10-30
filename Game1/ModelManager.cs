@@ -42,10 +42,10 @@ namespace Game1
         int nextSpanwTime = 0;
         int timeSinceLastSpawn = 0;
         float maxRollAngle = MathHelper.PiOver4 / 40;
-        int enemyThisLevel = 0;
+        public int enemyThisLevel = 0;
         int missedThisLevel = 0;
         public int currentLevel = 0;
-        protected Tank1 tank1;
+
         public List<LevelInfo> levelInfoList = new List<LevelInfo>();
         List<BasicModel> models = new List<BasicModel>();
         List<BasicModel> obstacles = new List<BasicModel>();
@@ -189,12 +189,12 @@ namespace Game1
 
             //Quadtree is use for reduce cpu time in relation to 
             //the collisions between bullets and enemy tanks
-            int worldSize = 1200;
+            int worldSize = 600;
             int maxDepth = 7;
             int maxNodeObject = 5;
             Point center = new Point(0, 0);
-            Quadtree quadtree_bulletEnemy = new Quadtree (worldSize,maxDepth,maxNodeObject,center);
-
+            Quadtree quadtree_Enemy = new Quadtree (worldSize,maxDepth,maxNodeObject,center);
+            Quadtree quadtree_obstacles = new Quadtree(worldSize, maxDepth, maxNodeObject, center);
 
             foreach (BasicModel model in models)
             {
@@ -207,20 +207,20 @@ namespace Game1
 
             foreach (BasicModel model in bullets)
             {
-                quadtree_bulletEnemy.Add(model);
+                
                 model.Update(gameTime);
             }
 
 
             foreach (BasicModel model in obstacles)
             {
-
+                quadtree_obstacles.Add(model);
                 model.Update(gameTime);
             }
 
             foreach (BasicModel model in enemies)
             {
-                
+                quadtree_Enemy.Add(model);
                 model.Update(gameTime);
             }
 
@@ -248,17 +248,18 @@ namespace Game1
                 }
             }
 
-            for (int i = 0;i< enemies.Count;i++)
+            for (int i = 0;i< bullets.Count;i++)
             {
-                float x= enemies[i].world.Translation.X;
-                float y = enemies[i].world.Translation.Z;
+                float x= bullets[i].world.Translation.X;
+                float y = bullets[i].world.Translation.Z;
                 //Enemies collides with player (player health -)
-                Quadtree temp = quadtree_bulletEnemy.GetNodeContaining(x, y);
+                Quadtree nearEnemies = quadtree_Enemy.GetNodeContaining(x, y);
 
-                foreach (BasicModel bullet in temp.models)
+                foreach (BasicModel enemy in nearEnemies.models)
                 {
-                    if (enemies[i].CollidesWith(bullet.model, bullet.world))
+                    if (bullets[i].CollidesWith(enemy.model, enemy.world))
                     {
+                        bullets.RemoveAt(i);
                         ((Game1)Game).soundHit.Play();
                         if (enemies[i] is Human)
                         {
@@ -268,11 +269,24 @@ namespace Game1
                         {
                             ((Game1)Game).AddPoints();
                         }
-                        enemies.RemoveAt(i);
-                        bullets.Remove(bullet);
+                        enemies.Remove(enemy);
+                        
                         --i;
                         break;
                     }
+                }
+            }
+
+
+            Quadtree nearObstacles = quadtree_obstacles.GetNodeContaining(tank.translation.Translation.X, tank.translation.Translation.Z);
+
+            foreach (BasicModel model in nearObstacles.models )
+            {
+
+                if (model.CollidesWith(tank.model,tank.world))
+                {
+                    tank.velocity = Vector3.Zero;
+
                 }
             }
 

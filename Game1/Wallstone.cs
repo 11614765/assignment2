@@ -27,7 +27,8 @@ namespace Game1
         
         protected override Matrix GetWorld()
         {
-            return scale * translation;
+            world = scale * translation;
+            return world;
         }
     }
 }

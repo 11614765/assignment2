@@ -15,7 +15,7 @@ namespace Game1
 
         Vector3 traget;
         Vector3 velocity;
-        Matrix scale = Matrix.CreateScale(.05f);
+        Matrix scale = Matrix.CreateScale(.01f);
         Matrix translate;
         public Bullet(Model model, Vector3 pos, Vector3 target)
             : base(model)
