@@ -298,12 +298,6 @@ namespace Game1
             score++;
             killed++;
         }
-        public void DeductPoints()
-        {
-            //score += points;
-            score--;
-            killed++;
-        }
 
         public void kill()
         {
