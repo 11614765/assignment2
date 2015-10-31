@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using System.Xml.Linq;
 
 namespace Game1
 {
@@ -42,7 +42,7 @@ namespace Game1
         int nextSpanwTime = 0;
         int timeSinceLastSpawn = 0;
         float maxRollAngle = MathHelper.PiOver4 / 40;
-        int enemyThisLevel = 0;
+        public int enemyThisLevel = 0;
         int missedThisLevel = 0;
         public int currentLevel = 0;
         protected Tank1 tank1;
@@ -59,9 +59,22 @@ namespace Game1
             map = new Map();
             pathfinder = new Pathfinder(map);
             wallstone = new Wallstone[map.barrierList.Count];
+            XElement level = XElement.Load(@"Content/config/levelsetting.xml");
             //tank1 = new Tank1(Game.Content.Load<Model>(@"Models/Tank/tank"), ((Game1)Game).GraphicsDevice,
             //   ((Game1)Game).camera);
-            levelInfoList.Add(new LevelInfo(10,100,5,2,21,10));
+            foreach (XElement levelnumber in level.Elements()) { 
+            foreach (XElement parameters in levelnumber.Elements())
+            {
+                levelInfoList.Add(new LevelInfo(int.Parse(parameters.Attribute("minSpawnTime").Value),
+                                int.Parse(parameters.Attribute("maxSpawnTime").Value),
+                                int.Parse(parameters.Attribute("numberEnemies").Value),
+                                int.Parse(parameters.Attribute("minspeed").Value),
+                                int.Parse(parameters.Attribute("maxSpeed").Value),
+                                int.Parse(parameters.Attribute("missAllowed").Value)
+                  ));
+             }
+            }
+        /*    levelInfoList.Add(new LevelInfo(10,100,5,2,21,10));
             levelInfoList.Add(new LevelInfo(900,2800,10,3,6,9));
             levelInfoList.Add(new LevelInfo(800, 2600, 15, 4, 6, 8));
             levelInfoList.Add(new LevelInfo(700, 2400,20, 5, 7, 7));
@@ -76,7 +89,8 @@ namespace Game1
             levelInfoList.Add(new LevelInfo(50, 600, 70, 8, 10, 0));
             levelInfoList.Add(new LevelInfo(25, 400, 75, 8, 10, 0));
             levelInfoList.Add(new LevelInfo(0, 200, 80, 8, 20, 0));
-            this.game = game;
+         */   
+         this.game = game;
            
            
         }
