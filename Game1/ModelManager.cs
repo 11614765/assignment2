@@ -11,6 +11,8 @@ namespace Game1
 {
     class ModelManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
+
+
         //位置
         private string currentPosition;
         private string pickPosition;
@@ -206,7 +208,7 @@ namespace Game1
 
             //Quadtree is use for reduce cpu time in relation to 
             //the collisions between bullets and enemy tanks
-            int worldSize = 1200;
+            int worldSize = 2400;
             int maxDepth = 7;
             int maxNodeObject = 5;
             Point center = new Point(0, 0);
@@ -295,7 +297,7 @@ namespace Game1
                     {
                         bullets.RemoveAt(i);
                         ((Game1)Game).soundHit.Play();
-                        if (enemies[i] is Human)
+                        if (enemy is Human)
                         {
                             ((Game1)Game).DeductPoints();
                         }
@@ -319,8 +321,10 @@ namespace Game1
 
                 if (model.CollidesWith(tank.model,tank.world))
                 {
-                    tank.velocity = Vector3.Zero;
-
+                    
+                   
+                    tank.CurrentPosition = tank.CurrentPosition - tank.velocity/30;
+                    
                 }
             }
 
