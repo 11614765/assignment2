@@ -195,7 +195,7 @@ namespace Game1
 
             //Quadtree is use for reduce cpu time in relation to 
             //the collisions between bullets and enemy tanks
-            int worldSize = 600;
+            int worldSize = 1200;
             int maxDepth = 7;
             int maxNodeObject = 5;
             Point center = new Point(0, 0);
