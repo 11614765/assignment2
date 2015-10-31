@@ -88,7 +88,7 @@ namespace Game1
             {
                 humanState = HumanState.FLEE;
             }
-            if (distance > >400)
+            if (distance > 400)
             {
                 humanState = HumanState.SEEK;
             }
