@@ -87,7 +87,9 @@ namespace Game1
                 currentVelocity += steer.pursue(targetTank.CurrentPosition, targetTank.velocity, position, currentVelocity);
                 position += currentVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 translation = Matrix.CreateTranslation(position);
-                orintation = targetPosition - position;
+                //orintation = targetPosition - position;
+                //double turnedAngle = rotationSpeed * time;
+                //RotateGhost(turnedAngle);
             }
 
             else
