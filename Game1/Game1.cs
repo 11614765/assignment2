@@ -22,7 +22,7 @@ namespace Game1
         //score
         SplashScreen splashScreen;
         int score = 0;
-        int health =13;
+        int health =3;
         int Health
         {
             get; set;
@@ -85,7 +85,7 @@ namespace Game1
             // Splash screen component 
             splashScreen = new SplashScreen(this);
             Components.Add(splashScreen);
-            splashScreen.SetData("Welcome to Assignment 1", currentGameState);
+            splashScreen.SetData("Welcome to War of Tank", currentGameState);
             //开始界面end-------------
 
             IsMouseVisible = true;
@@ -155,7 +155,7 @@ namespace Game1
             // TODO: Add your update logic here
             if (shotCountdown <= 0)
             {
-                if (Mouse.GetState().RightButton == ButtonState.Pressed)
+                if (Keyboard.GetState().IsKeyDown(Keys.Space))
                 {
 
                     Vector3? pickpos;

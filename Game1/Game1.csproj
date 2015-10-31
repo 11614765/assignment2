@@ -46,7 +46,6 @@
     <Compile Include="Gronud.cs" />
     <Compile Include="Human.cs" />
     <Compile Include="LevelInfo.cs" />
-    <Compile Include="LineBatch.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="ModelManager.cs" />
     <Compile Include="MousePicking.cs" />
@@ -59,7 +58,6 @@
     <Compile Include="SplashScreen.cs" />
     <Compile Include="Steering.cs" />
     <Compile Include="Tank.cs" />
-    <Compile Include="Tank1.cs" />
     <Compile Include="TankEnemy.cs" />
     <Compile Include="Text.cs" />
     <Compile Include="Wallstone.cs" />
@@ -73,6 +71,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\config\fsm_Human.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\config\levelsetting.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
