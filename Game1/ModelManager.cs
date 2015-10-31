@@ -22,7 +22,7 @@ namespace Game1
 
         }
 
-        public string PickPosition
+        public string PickPositionString
         {
             get { return pickPosition; }
 
@@ -117,7 +117,7 @@ namespace Game1
             models.Add(new SkyBox(
                    Game.Content.Load<Model>(@"Models/Skybox/skybox")));
             tank = new Tank(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
-            pursuitenemy = new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
+            //pursuitenemy = new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
             for (int i = 0; i < wallstone.Length; i++)
             {
                 Vector3 stoneposition = map.MapToWorld(map.barrierList[i], true);
@@ -158,8 +158,8 @@ namespace Game1
             models.Add(ground);
             //models.Add(new SkyBox(Game.Content.Load<Model>(@"Models/SkyBox/skybox")));
             models.Add(tank);
-            models.Add(pursuitenemy);
-            pursuitenemy.TargetPlayer(tank);
+            //models.Add(pursuitenemy);
+            //pursuitenemy.TargetPlayer(tank);
 
             //foreach (BasicModel wallstonemodel in wallstone)
             //{
@@ -192,7 +192,10 @@ namespace Game1
             //Vector3 direction = new Vector3(0, 0, tank.CurrentPosition.Z);
 
             //  float rollRotation = (float)(((Game1)Game).rnd.NextDouble()*maxRollAngle - (maxRollAngle/2));
-            enemies.Add(new TankEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, tank,levelInfoList[currentLevel].minSpeed));
+            //enemies.Add(new TankEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, tank,levelInfoList[currentLevel].minSpeed));
+            pursuitenemy =new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
+            pursuitenemy.TargetPlayer(tank);
+            enemies.Add(pursuitenemy);
             ++enemyThisLevel;
             SetNextSpawnTime();
         }
@@ -246,7 +249,7 @@ namespace Game1
             Point center = new Point(0, 0);
             Quadtree quadtree_Enemy = new Quadtree (worldSize,maxDepth,maxNodeObject,center);
             Quadtree quadtree_obstacles = new Quadtree(worldSize, maxDepth, maxNodeObject, center);
-            
+
 
             //if (pursuitenemy.pathdebug != null)
             //{
@@ -316,7 +319,7 @@ namespace Game1
                 }
             }
             }
-             
+
             for (int i = 0; i< bullets.Count;i++)
             {
                 float x = bullets[i].world.Translation.X;
@@ -342,7 +345,7 @@ namespace Game1
                 float y = bullets[i].world.Translation.Z;
                 //Enemies collides with player (player health -)
                 Quadtree nearEnemies = quadtree_Enemy.GetNodeContaining(x, y);
-                
+
 
                 foreach (BasicModel enemy in nearEnemies.models)
                 {
@@ -374,9 +377,7 @@ namespace Game1
 
                 if (model.CollidesWith(tank.model,tank.world))
                 {
-                    
-                   
-                    tank.CurrentPosition = tank.CurrentPosition - tank.velocity/30;
+                    tank.velocity = Vector3.Zero;
                     
                 }
             }

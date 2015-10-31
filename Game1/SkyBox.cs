@@ -47,7 +47,7 @@ namespace Game1
         }
         protected override Matrix GetWorld()
         {
-            return Matrix.CreateScale(2000f)* Matrix.CreateTranslation(0,-60,0);
+            return Matrix.CreateScale(2000f)* Matrix.CreateTranslation(0,-400,0);
            
         }
 
