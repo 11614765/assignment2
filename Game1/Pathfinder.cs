@@ -271,7 +271,7 @@ namespace Game1
 
             // Store references to the start and end nodes for convenience.
             SearchNode startNode = searchNodes[startPoint.X, startPoint.Y];
-             SearchNode endNode = searchNodes[endPoint.X, endPoint.Y];
+            SearchNode endNode = searchNodes[endPoint.X, endPoint.Y];
 
             /////////////////////////////////////////////////////////////////////
             // Step 2 : Set the start node’s G value to 0 and its F value to the 

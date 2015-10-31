@@ -234,6 +234,7 @@ namespace Game1
 
             // Draw the current score //分数
             string scoreText = "Score: " + score + " Health: " +health;
+            
             base.Draw(gameTime);
             spriteBatch.Begin();
             //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
@@ -245,7 +246,7 @@ namespace Game1
             //spriteBatch.DrawString(font, message1, Vector2.Zero, Color.Red, 0, textOrigin, textSize, 0, 0);
             //spriteBatch.DrawString(font, message2, new Vector2(15, 15), Color.Red, 0, textOrigin, textSize, 0, 0);
             spriteBatch.DrawString(scoreFont, scoreText, new Vector2(0, 0), Color.Red); 
-            //spriteBatch.DrawString(scoreFont, scoreText, new Vector2(0, 0), Color.Red);
+            spriteBatch.DrawString(scoreFont, message2, new Vector2(0, 20), Color.Red);
             //spriteBatch.DrawString(scoreFont, scoreText, new Vector2(0, 0), Color.Red);
             //spriteBatch.DrawString(font, message3, new Vector2(20, 40), Color.Red);
             //spriteBatch.DrawString(font, message4, new Vector2(20, 60), Color.Red);

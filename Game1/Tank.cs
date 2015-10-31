@@ -11,7 +11,7 @@ namespace Game1
     class Tank : BasicModel
     {
         // tank property define
-        public Vector3 CurrentPosition { get; set; }
+        public Vector3 CurrentPosition;
         
         public Vector3 tankDirection;
         double threshold;
@@ -217,6 +217,7 @@ namespace Game1
                     //    rotateDirection = -1;
 
                     velocity += steer.seek(PickPosition, CurrentPosition, velocity) * time;
+                    LimitInBoundary();
                     CurrentPosition += velocity * time;
                     translation = Matrix.CreateTranslation(CurrentPosition);
 
@@ -290,18 +291,18 @@ namespace Game1
         //    lbackwheelBone.Transform *= Matrix.CreateRotationX(MathHelper.PiOver4 );
             
         //}
-        //private void LimitInBoundary()
-        //{
-        //    float minBoundary = boundary - 500 * scaleRatio;
-        //    if (position.X > minBoundary)
-        //        position.X = minBoundary;
-        //    if (position.X < -minBoundary)
-        //        position.X = -minBoundary;
-        //    if (position.Z > minBoundary)
-        //        position.Z = minBoundary;
-        //    if (position.Z < -minBoundary)
-        //        position.Z = -minBoundary;
-        //}
+        private void LimitInBoundary()
+        {
+            float minBoundary = 1100;
+            if (CurrentPosition.X > minBoundary)
+                CurrentPosition.X = minBoundary;
+            if (CurrentPosition.X < -minBoundary)
+                CurrentPosition.X = -minBoundary;
+            if (CurrentPosition.Z > minBoundary)
+                CurrentPosition.Z = minBoundary;
+            if (CurrentPosition.Z < -minBoundary)
+                CurrentPosition.Z = -minBoundary;
+        }
 
     }
 }
