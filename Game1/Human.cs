@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,8 @@ namespace Game1
     class Human : BasicModel
     {
         private Tank targetTank;
-
+        private delegate void Behavious(GameTime gameTime);
+        Behavious[] behavious;
         private Matrix rotation = Matrix.Identity;
 
         private Vector3 position;
@@ -42,7 +44,7 @@ namespace Game1
         private double acceleration = 0.005;
         private float maxSpeed;
         private float minStopSpeed = 0.1f;
-        private float fleeDistance = 180;
+        private float fleeDistance = 150;
         private float boundary = 1000f;
         private float scale = 0.05f;
         private int mass = 10;
@@ -51,7 +53,7 @@ namespace Game1
         private bool isMoving;
 
 
-        public Human (Model m, Vector3 Position, Tank tank, int speed) : base(m)
+        public Human(Model m, Vector3 Position, Tank tank, int speed) : base(m)
         {
 
             humanState = HumanState.SEEK;
@@ -63,6 +65,34 @@ namespace Game1
 
             RandomPatrolPoint();
             translation = Matrix.CreateTranslation(position);
+            //behavious[0] = Flee;
+            behavious = new Behavious[2];
+            XElement states = XElement.Load(@"Content/config/fsm_Human.xml");
+            int i = 0;
+            foreach (XElement state in states.Elements())
+            {
+
+                foreach (XElement Todo in state.Elements())
+                {
+                    if (Todo.Attribute("condition").Value == "PLAYERNEAR")
+                    {
+                        i = 0;
+        }
+                    if (Todo.Attribute("condition").Value == "PLAYERFAR")
+                    {
+                        i = 1;
+                    }
+                    if (Todo.Attribute("toState").Value == "FLEE")
+                    {
+                        behavious[i] = Flee;
+                    }
+                    if (Todo.Attribute("toState").Value == "SEEK")
+                    {
+                        behavious[i] = Pursue;
+                    }
+                }
+
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -81,34 +111,27 @@ namespace Game1
             //    Vector3 path = direction * speed;
             //    world *= Matrix.CreateTranslation(path);
             //}
-            int time = gameTime.ElapsedGameTime.Milliseconds;
             float distance = (targetTank.CurrentPosition - this.position).Length();
 
-            if (distance< fleeDistance)
+            if (distance < fleeDistance)
             {
                 humanState = HumanState.FLEE;
             }
-            if (distance > 400)
+            if (distance > 180)
             {
                 humanState = HumanState.SEEK;
             }
            
 
-            if (distance < fleeDistance)
+            if (humanState == HumanState.FLEE)
             {
-                
-                targetPosition = targetTank.CurrentPosition;
-                orintation = position - targetPosition;   //opposite direction of the target 
-                            MovingToTarget(time);
+                behavious[0](gameTime);
 
             }
-            else if (distance > 250)
+            else if (humanState == HumanState.SEEK)
             {
+                behavious[1](gameTime);
                 
-                currentVelocity += steer.pursue(targetTank.CurrentPosition, targetTank.velocity, position, currentVelocity);
-                position += currentVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                translation = Matrix.CreateTranslation(position);
-                orintation = targetPosition - position;
             }
 
             else
@@ -118,6 +141,21 @@ namespace Game1
             base.Update(gameTime);
 
         }
+        private void Flee(GameTime gameTime)
+        {
+            int time = gameTime.ElapsedGameTime.Milliseconds;
+            targetPosition = targetTank.CurrentPosition;
+            orintation = position - targetPosition;   //opposite direction of the target 
+            MovingToTarget(time);
+        }
+        private void Pursue(GameTime gameTime)
+        {
+            currentVelocity += steer.pursue(targetTank.CurrentPosition, targetTank.velocity, position, currentVelocity);
+            position += currentVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            translation = Matrix.CreateTranslation(position);
+            orintation = targetPosition - position;
+        }
+
 
         private void MovingToTarget(int time)
         {
@@ -229,7 +267,7 @@ namespace Game1
         }
         protected override Matrix GetWorld()
         {
-            world = Matrix.CreateScale(.1f) * rotation* translation ;
+            world = Matrix.CreateScale(.1f) * rotation * translation;
             return world;
         }
 
@@ -242,3 +280,4 @@ namespace Game1
         }
     }
 }
+
