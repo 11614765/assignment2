@@ -76,7 +76,8 @@ namespace Game1
                                 int.Parse(parameters.Attribute("numberEnemies").Value),
                                 int.Parse(parameters.Attribute("minspeed").Value),
                                 int.Parse(parameters.Attribute("maxSpeed").Value),
-                                int.Parse(parameters.Attribute("missAllowed").Value)
+                                int.Parse(parameters.Attribute("missAllowed").Value),
+                                int.Parse(parameters.Attribute("numHuman").Value)
                   ));
              }
             }

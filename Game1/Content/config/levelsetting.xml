@@ -4,33 +4,33 @@
  
  <fsm name = "level setting">
   <levelnumber name = "level0">
-   <parameters minSpawnTime = "1000" maxSpawnTime = "3000" numberEnemies = "1" minspeed = "2" maxSpeed = "4" missAllowed = "10"/>
+   <parameters minSpawnTime = "1000" maxSpawnTime = "3000" numberEnemies = "1" minspeed = "2" maxSpeed = "4" missAllowed = "10" numHuman ="2"/>
    </levelnumber>
    <levelnumber name = "level1">
-   <parameters minSpawnTime = "90" maxSpawnTime = "2800" numberEnemies = "2" minspeed = "4" maxSpeed = "6" missAllowed = "9"/>
+   <parameters minSpawnTime = "90" maxSpawnTime = "2800" numberEnemies = "2" minspeed = "4" maxSpeed = "6" missAllowed = "9" numHuman ="2"/>
    </levelnumber>
     <levelnumber name = "level3">
-   <parameters minSpawnTime = "800" maxSpawnTime = "2600" numberEnemies = "25" minspeed = "6" maxSpeed = "8" missAllowed = "8"/>
+   <parameters minSpawnTime = "800" maxSpawnTime = "2600" numberEnemies = "25" minspeed = "6" maxSpeed = "8" missAllowed = "8" numHuman ="3"/>
    </levelnumber>
     <levelnumber name = "level4">
-   <parameters minSpawnTime = "700" maxSpawnTime = "2400" numberEnemies = "30" minspeed = "8" maxSpeed = "10" missAllowed = "7"/>
+   <parameters minSpawnTime = "700" maxSpawnTime = "2400" numberEnemies = "30" minspeed = "8" maxSpeed = "10" missAllowed = "7" numHuman ="3"/>
    </levelnumber>
     <levelnumber name = "level5">
-   <parameters minSpawnTime = "600" maxSpawnTime = "2200" numberEnemies = "35" minspeed = "10" maxSpeed = "12" missAllowed = "6"/>
+   <parameters minSpawnTime = "600" maxSpawnTime = "2200" numberEnemies = "35" minspeed = "10" maxSpeed = "12" missAllowed = "6" numHuman ="4"/>
    </levelnumber>
    <levelnumber name = "level6">
-   <parameters minSpawnTime = "500" maxSpawnTime = "2000" numberEnemies = "40" minspeed = "12" maxSpeed = "14" missAllowed = "8"/>
+   <parameters minSpawnTime = "500" maxSpawnTime = "2000" numberEnemies = "40" minspeed = "12" maxSpeed = "14" missAllowed = "8" numHuman ="4"/>
    </levelnumber>
    <levelnumber name = "level7">
-   <parameters minSpawnTime = "600" maxSpawnTime = "1800" numberEnemies = "45" minspeed = "14" maxSpeed = "16" missAllowed = "7"/>
+   <parameters minSpawnTime = "600" maxSpawnTime = "1800" numberEnemies = "45" minspeed = "14" maxSpeed = "16" missAllowed = "7" numHuman ="5"/>
    </levelnumber>
     <levelnumber name = "level8">
-   <parameters minSpawnTime = "500" maxSpawnTime = "1600" numberEnemies = "50" minspeed = "16" maxSpeed = "18" missAllowed = "6"/>
+   <parameters minSpawnTime = "500" maxSpawnTime = "1600" numberEnemies = "50" minspeed = "16" maxSpeed = "18" missAllowed = "6" numHuman ="5"/>
    </levelnumber>
     <levelnumber name = "level9">
-   <parameters minSpawnTime = "400" maxSpawnTime = "1400" numberEnemies = "55" minspeed = "18" maxSpeed = "20" missAllowed = "5"/>
+   <parameters minSpawnTime = "400" maxSpawnTime = "1400" numberEnemies = "55" minspeed = "18" maxSpeed = "20" missAllowed = "5" numHuman ="6"/>
    </levelnumber>
     <levelnumber name = "level10">
-   <parameters minSpawnTime = "300" maxSpawnTime = "1200" numberEnemies = "60" minspeed = "20" maxSpeed = "22" missAllowed = "4"/>
+   <parameters minSpawnTime = "300" maxSpawnTime = "1200" numberEnemies = "60" minspeed = "20" maxSpeed = "22" missAllowed = "4" numHuman ="6"/>
    </levelnumber>
   </fsm>
