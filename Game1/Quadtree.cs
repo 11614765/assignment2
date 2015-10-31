@@ -39,15 +39,15 @@ namespace Game1
 
 
             //first squre
-            if (this.currentDepth == 0)
-            {
-                this.nodeBounds = new Rectangle((int)center.X - size, (int)center.Y - size, size * 2, size * 2);
-            }
-            //depth >0 means it is divided by previous squre and its size is only 1/4
-            else
-            {
-                this.nodeBounds = new Rectangle((int)center.X - size / 2, (int)center.Y - size / 2, size, size);
-            }
+            //if (this.currentDepth == 0)
+            //{
+            //    this.nodeBounds = new Rectangle((int)center.X - size, (int)center.Y - size, size * 2, size * 2);
+            //}
+            ////depth >0 means it is divided by previous squre and its size is only 1/4
+            //else
+            //{
+                this.nodeBounds = new Rectangle((int)center.X - (size / 2), (int)center.Y - (size / 2), size, size);
+            //}
 
         }
 
@@ -91,12 +91,12 @@ namespace Game1
                     tempModel.Add(nodeModel);
                     
                 }
-                this.models.Clear();
+                
                 foreach (BasicModel tempmodels  in tempModel)
                 {
                     Add(tempmodels);
                 }
-               
+                this.models.Clear();
                 return Add(obj, objCenter);
             }
 
@@ -122,7 +122,7 @@ namespace Game1
             this.childNodes[3] = new Quadtree(parentSize / 2, depth, this.nodeCenter + new Point(quarter, quarter), this);
         }
 
-
+        //Input the position to find objects in the same sub-world
         public Quadtree GetNodeContaining(float x, float y)
         {
             if (this.childNodes != null)

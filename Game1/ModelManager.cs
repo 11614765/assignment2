@@ -30,13 +30,18 @@ namespace Game1
         //model define
         Ground ground;
         Tank tank;
-        //List<Wallstone> wallstone = new List<Wallstone>();
+        PursuitEnemy pursuitenemy;
+        List<Wallstone> pathtrack = new List<Wallstone>();
         Wallstone[] wallstone;
 
         Map map;
         Pathfinder pathfinder;
         public Vector3 tankCurrentPosition { get { return tank.CurrentPosition; } }
 
+        //debug parameter
+        public int count;
+        public string cur;
+        public string pos;
 
         Vector3 maxSpawnLocation = new Vector3(100, 0, -3000);
         int nextSpanwTime = 0;
@@ -45,14 +50,15 @@ namespace Game1
         public int enemyThisLevel = 0;
         int missedThisLevel = 0;
         public int currentLevel = 0;
-        protected Tank1 tank1;
+
         public List<LevelInfo> levelInfoList = new List<LevelInfo>();
         List<BasicModel> models = new List<BasicModel>();
-
-        Game game;
+        List<BasicModel> obstacles = new List<BasicModel>();
+        List<BasicModel> enemies = new List<BasicModel>();
         public List<BasicModel> bullets = new List<BasicModel>();
 
-        List<BasicModel> enemies = new List<BasicModel>();
+        Game game;
+
 
         public ModelManager(Game game) : base(game) 
         {
@@ -90,7 +96,7 @@ namespace Game1
             levelInfoList.Add(new LevelInfo(25, 400, 75, 8, 10, 0));
             levelInfoList.Add(new LevelInfo(0, 200, 80, 8, 20, 0));
          */   
-         this.game = game;
+            this.game = game;
            
            
         }
@@ -108,15 +114,37 @@ namespace Game1
             models.Add(new SkyBox(
                    Game.Content.Load<Model>(@"Models/Skybox/skybox")));
             tank = new Tank(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
-
+            pursuitenemy = new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
             for (int i = 0; i < wallstone.Length; i++)
             {
                 Vector3 stoneposition = map.MapToWorld(map.barrierList[i], true);
-                //wallstone.Add(new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition));
                 wallstone[i] = new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition);
-                models.Add(wallstone[i]);
+                obstacles.Add(wallstone[i]);
             }
             
+            //for(int x=0; x<21; x++)
+            //{
+            //    for (int y = 0; y < 21; y++)
+            //    {
+            //        if (y == 0 ||x==0 || y==20||x==20)
+            //        { 
+            //            AddWall(-1200 + y * 120, -1200 + x * 120);
+            //        }
+
+
+            //    }
+            //}
+            for (int x = -1 * 1200; x <= 1200; x += 120)
+            {
+                AddWall(x, 1200);
+                AddWall(x, -1200);
+                AddWall(1200, x);
+                AddWall(-1200, x);
+
+
+            }
+
+
             base.Initialize();
             
         }
@@ -127,6 +155,8 @@ namespace Game1
             models.Add(ground);
             //models.Add(new SkyBox(Game.Content.Load<Model>(@"Models/SkyBox/skybox")));
             models.Add(tank);
+            models.Add(pursuitenemy);
+            pursuitenemy.TargetPlayer(tank);
 
             //foreach (BasicModel wallstonemodel in wallstone)
             //{
@@ -153,6 +183,17 @@ namespace Game1
                 timeSinceLastSpawn += gameTime.ElapsedGameTime.Milliseconds;
                 if (timeSinceLastSpawn > nextSpanwTime)
                 {
+                    if (enemyThisLevel == 0)
+                    {
+                        for (int i=0; i<levelInfoList[currentLevel].numHuman; i++)
+                        {
+                            Vector3 humPosition = new Vector3(((Game1)Game).rnd.Next(-2000, (int)maxSpawnLocation.X),
+                                0,
+                                ((Game1)Game).rnd.Next((int)maxSpawnLocation.Z, -100));
+                            enemies.Add(new Human(Game.Content.Load<Model>(@"Models/Tank/anna"), humPosition, tank, 3));
+
+                        }
+                    }
                     SpawnEnemy();
                 }
             
@@ -183,7 +224,24 @@ namespace Game1
             int maxDepth = 7;
             int maxNodeObject = 5;
             Point center = new Point(0, 0);
-            Quadtree quadtree_bulletEnemy = new Quadtree (worldSize,maxDepth,maxNodeObject,center);
+            Quadtree quadtree_Enemy = new Quadtree (worldSize,maxDepth,maxNodeObject,center);
+            Quadtree quadtree_obstacles = new Quadtree(worldSize, maxDepth, maxNodeObject, center);
+
+            //if (pursuitenemy.pathdebug != null)
+            //{
+            //    foreach (Vector3 track in pursuitenemy.pathdebug)
+            //    {
+            //        pathtrack.Add(new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), track));
+
+            //    }
+            //    pursuitenemy.pathdebug = null;
+            //    foreach (BasicModel track in pathtrack)
+            //    {
+            //        models.Add(track);
+            //    }
+            //    pathtrack.Clear();
+
+            //}
 
 
             foreach (BasicModel model in models)
@@ -197,14 +255,20 @@ namespace Game1
 
             foreach (BasicModel model in bullets)
             {
-                quadtree_bulletEnemy.Add(model);
+                
                 model.Update(gameTime);
             }
                 
 
+            foreach (BasicModel model in obstacles)
+            {
+                quadtree_obstacles.Add(model);
+                model.Update(gameTime);
+            }
+
             foreach (BasicModel model in enemies)
             {
-                
+                quadtree_Enemy.Add(model);
                 model.Update(gameTime);
             }
 
@@ -213,6 +277,16 @@ namespace Game1
             {
                 if (enemies[i].CollidesWith(tank.model, tank.world))
                 {
+                    if (enemies[i] is Human)
+                    {
+                        enemies.RemoveAt(i);
+                        
+                        --i;
+                        ((Game1)Game).reduceHealth();
+                        break;
+                    }
+                    else
+                    {
                     enemies.RemoveAt(i);
                     ((Game1)Game).kill();
                     --i;
@@ -220,33 +294,54 @@ namespace Game1
                     break;
                 }
             }
+            }
 
-            for (int i = 0;i< enemies.Count;i++)
+            for (int i = 0;i< bullets.Count;i++)
             {
-                float x= enemies[i].world.Translation.X;
-                float y = enemies[i].world.Translation.Z;
+                float x= bullets[i].world.Translation.X;
+                float y = bullets[i].world.Translation.Z;
                 //Enemies collides with player (player health -)
-                Quadtree temp = quadtree_bulletEnemy.GetNodeContaining(x, y);
+                Quadtree nearEnemies = quadtree_Enemy.GetNodeContaining(x, y);
 
-                foreach (BasicModel bullet in temp.models)
+                foreach (BasicModel enemy in nearEnemies.models)
                 {
-                    if (enemies[i].CollidesWith(bullet.model, bullet.world))
+                    if (bullets[i].CollidesWith(enemy.model, enemy.world))
                     {
+                        bullets.RemoveAt(i);
                         ((Game1)Game).soundHit.Play();
+                        if (enemies[i] is Human)
+                        {
+                            ((Game1)Game).DeductPoints();
+                        }
+                        else
+                        {
                         ((Game1)Game).AddPoints();
+                        }
+                        enemies.Remove(enemy);
                         
-                        enemies.RemoveAt(i);
-                        bullets.Remove(bullet);
                         --i;
                         break;
                     }
                 }
             }
 
+
+            Quadtree nearObstacles = quadtree_obstacles.GetNodeContaining(tank.translation.Translation.X, tank.translation.Translation.Z);
+
+            foreach (BasicModel model in nearObstacles.models )
+            {
+
+                if (model.CollidesWith(tank.model,tank.world))
+                {
+                    tank.velocity = Vector3.Zero;
+
+                }
+            }
+
             updateShots(gameTime);
 
 
-            base. Update(gameTime);
+            base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
         {
@@ -265,6 +360,11 @@ namespace Game1
                 model.Draw(((Game1)Game).device, ((Game1)Game).camera);
 
             }
+            foreach (BasicModel model in obstacles)
+            {
+                model.Draw(((Game1)Game).device, ((Game1)Game).camera);
+
+            }
 
             base.Draw(gameTime);
         }
@@ -276,6 +376,10 @@ namespace Game1
                 (Game.Content.Load<Model>((@"Models/Tank/tank")),
                 tank.world.Translation, target));
         }
+        public void AddWall(int x, int y)
+        {
+            obstacles.Add(new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), new Vector3(x,0,y)));
+        }
 
 
         protected void updateShots(GameTime gameTime)
@@ -284,9 +388,8 @@ namespace Game1
             {
                 bullets[i].Update(gameTime);
 
-                if (bullets[i].world.Translation.X > 5000 || bullets[i].world.Translation.Y > 5000 || bullets[i].world.Translation.Z > 5000||
-                    bullets[i].world.Translation.X < -5000 || bullets[i].world.Translation.Y < -100 || bullets[i].world.Translation.X < -5000
-                    )
+                if (bullets[i].world.Translation.X > 600 || bullets[i].world.Translation.Z > 600||
+                    bullets[i].world.Translation.X < -600 || bullets[i].world.Translation.X < -600)
                 {
                     bullets.RemoveAt(i);
                     i--;
