@@ -290,6 +290,18 @@ namespace Game1
         //    lbackwheelBone.Transform *= Matrix.CreateRotationX(MathHelper.PiOver4 );
             
         //}
+        //private void LimitInBoundary()
+        //{
+        //    float minBoundary = boundary - 500 * scaleRatio;
+        //    if (position.X > minBoundary)
+        //        position.X = minBoundary;
+        //    if (position.X < -minBoundary)
+        //        position.X = -minBoundary;
+        //    if (position.Z > minBoundary)
+        //        position.Z = minBoundary;
+        //    if (position.Z < -minBoundary)
+        //        position.Z = -minBoundary;
+        //}
 
     }
 }

@@ -15,7 +15,7 @@ namespace Game1
         int moveorder;
         public bool isMoving;
         public float distanceTopickPosition; 
-        float desThresholdtoplayer = 8f;
+        float desThresholdtoplayer = 20f;
         public List<Vector3> pathdebug;
         public MousePicking mousepick;
         public Vector3 pickPosition;
@@ -28,7 +28,7 @@ namespace Game1
             translation = Matrix.CreateTranslation(Map.MapToWorld(new Point(10, 10)));
             velocity = Vector3.Zero;
             new Tank(model, device, camera);
-            //steer = new Steering(100f, 100f);
+            steer = new Steering(100f, 100f);
             map = new Map();
             pathfinder = new Pathfinder(map);
             isMoving = false;
@@ -85,7 +85,7 @@ namespace Game1
                 moveorder = 0;
                 if (path != null) path.Clear();
             }
-            base.Update(gametime);
+            //base.Update(gametime);
             //turretRorationValue = (float)Math.Sin(gametime.TotalGameTime.TotalSeconds);
         }
 
