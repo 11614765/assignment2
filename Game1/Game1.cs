@@ -305,13 +305,13 @@ namespace Game1
         public void AddPoints()
         {
             //score += points;
-            score++;
+            score+=100;
             killed++;
         }
         public void DeductPoints()
         {
             //score += points;
-            score--;
+            score-=200;
         
         }
 

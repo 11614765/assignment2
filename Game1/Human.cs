@@ -22,7 +22,6 @@ namespace Game1
         private Vector3 position;
         private Vector3 targetPosition;
         private Vector3 orintation;
-        public Vector3 velocity;
         private Vector3 currentVelocity;
         private Vector3 desiredVelocity;
         private Vector3 steeringForce;
@@ -35,7 +34,7 @@ namespace Game1
         private double acceleration = 0.005;
         private float maxSpeed;
         private float minStopSpeed = 0.1f;
-        private float fleeDistance = 300;
+        private float fleeDistance = 180;
         private float boundary = 1000f;
         private float scale = 0.05f;
         private int mass = 10;
@@ -82,12 +81,13 @@ namespace Game1
                             MovingToTarget(time);
 
             }
-            else if (distance > 400)
+            else if (distance > 250)
             {
-                velocity = currentVelocity;
-                velocity += steer.pursue(targetTank.CurrentPosition, targetTank.velocity, position, currentVelocity);
-                position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                
+                currentVelocity += steer.pursue(targetTank.CurrentPosition, targetTank.velocity, position, currentVelocity);
+                position += currentVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 translation = Matrix.CreateTranslation(position);
+                orintation = targetPosition - position;
             }
 
             else
@@ -106,7 +106,7 @@ namespace Game1
             if (currentVelocity.Length() > 1)
                 currentVelocity.Normalize();
             currentVelocity *= (float)currentSpeed;
-            //Flee tank will flee opposite way of player if player is in flee distance range
+            //ghost will flee opposite way of player if player is in flee distance range
             if ((targetPosition - position).Length() < fleeDistance)
             {
                 isMoving = true;
@@ -118,7 +118,7 @@ namespace Game1
                 else
                     currentSpeed = maxSpeed;
                 currentVelocity *= (float)currentSpeed;
-                //steering behavior of the enemy tank
+                //steering behavior of the ghost
                 Steering(time);
                 //update 9/5
                 RotateTank(turnedAngle);
