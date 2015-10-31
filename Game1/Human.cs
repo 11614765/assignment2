@@ -117,7 +117,7 @@ namespace Game1
             {
                 humanState = HumanState.FLEE;
             }
-            if (distance > 180)
+            if (distance> 300)
             {
                 humanState = HumanState.SEEK;
             }
@@ -131,7 +131,7 @@ namespace Game1
             else if (humanState == HumanState.SEEK)
             {
                 behavious[1](gameTime);
-                
+
             }
 
             else
