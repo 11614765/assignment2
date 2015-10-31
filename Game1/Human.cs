@@ -7,6 +7,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Game1
 {
+
+    public enum HumanState
+    {
+        SEEK,
+        FLEE
+    }
     class Human : BasicModel
     {
         private Tank targetTank;
@@ -32,13 +38,13 @@ namespace Game1
         private float boundary = 1000f;
         private float scaleRatio = 0.05f;
         private int mass = 10;
-
+        HumanState humanState;
         private bool isMoving;
         private bool isPatrolling;
 
         public Human (Model m, Vector3 Position, Tank tank, int speed) : base(m)
         {
-            
+            humanState = HumanState.SEEK;
             this.position = Position;
             this.targetTank = tank;
             this.maxSpeed = speed;
@@ -93,7 +99,7 @@ namespace Game1
             if ((targetPosition - position).Length() < fleeDistance)
             {
                 isMoving = true;
-                //tank will accelerate from 0 to max speed
+                
                 if (currentSpeed < maxSpeed)
                 {
                     currentSpeed += acceleration * time;

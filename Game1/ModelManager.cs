@@ -193,9 +193,9 @@ namespace Game1
                
           //  float rollRotation = (float)(((Game1)Game).rnd.NextDouble()*maxRollAngle - (maxRollAngle/2));
             //enemies.Add(new TankEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, tank,levelInfoList[currentLevel].minSpeed));
-            pursuitenemy =new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
-            pursuitenemy.TargetPlayer(tank);
-            enemies.Add(pursuitenemy);
+           
+            //pursuitenemy.TargetPlayer(tank);
+            enemies.Add(new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, (((Game1)Game).GraphicsDevice), ((Game1)Game).camera,tank));
             ++enemyThisLevel;
             SetNextSpawnTime();
         }
@@ -437,8 +437,8 @@ namespace Game1
             {
                 bullets[i].Update(gameTime);
 
-                if (bullets[i].world.Translation.X > 600 || bullets[i].world.Translation.Z > 600||
-                    bullets[i].world.Translation.X < -600 || bullets[i].world.Translation.X < -600)
+                if (bullets[i].world.Translation.X > 2000 || bullets[i].world.Translation.Z > 2000||
+                    bullets[i].world.Translation.X < -2000 || bullets[i].world.Translation.X < -2000)
                 {
                     bullets.RemoveAt(i);
                     i--;
