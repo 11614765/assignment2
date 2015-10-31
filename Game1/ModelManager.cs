@@ -307,6 +307,7 @@ namespace Game1
                         
                         --i;
                         ((Game1)Game).reduceHealth();
+                        ((Game1)Game).DeductPoints();
                         break;
                     }
                     else

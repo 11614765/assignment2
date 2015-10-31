@@ -22,7 +22,7 @@ namespace Game1
         //score
         SplashScreen splashScreen;
         int score = 0;
-        int health =3;
+        int health =6;
         int Health
         {
             get; set;

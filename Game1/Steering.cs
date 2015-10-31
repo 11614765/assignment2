@@ -44,7 +44,7 @@ namespace Game1
         }
         public Vector3 pursue(Vector3 evaderPosition, Vector3 evaderVelocity, Vector3 currentPosition, Vector3 velocity)
         {
-            float distance = Vector3.Subtract(evaderPosition, currentPosition).Length();
+            float distance = Vector3.Distance(evaderPosition, currentPosition);
             float timeToReachTarget = distance / velocity.Length();
             Vector3 targetPosition = evaderPosition + evaderVelocity * timeToReachTarget;
             return seek(targetPosition, currentPosition, velocity);
