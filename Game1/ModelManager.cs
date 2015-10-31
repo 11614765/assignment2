@@ -423,7 +423,7 @@ namespace Game1
         public void AddBullets(Vector3 target)
         {
             bullets.Add(new Bullet
-                (Game.Content.Load<Model>((@"Models/Bullet/bullet-model")),
+                (Game.Content.Load<Model>((@"Models/Tank/tank")),
                 tank.world.Translation, target));
         }
         public void AddWall(int x, int y)
