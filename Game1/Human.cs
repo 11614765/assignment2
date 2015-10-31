@@ -16,6 +16,7 @@ namespace Game1
         private Vector3 position;
         private Vector3 targetPosition;
         private Vector3 orintation;
+        public Vector3 velocity;
         private Vector3 currentVelocity;
         private Vector3 desiredVelocity;
         private Vector3 steeringForce;
@@ -30,9 +31,9 @@ namespace Game1
         private float minStopSpeed = 0.1f;
         private float fleeDistance = 300;
         private float boundary = 1000f;
-        private float scaleRatio = 0.05f;
+        private float scale = 0.05f;
         private int mass = 10;
-
+        Steering steer = new Steering(100f, 100f);
         private bool isMoving;
         private bool isPatrolling;
 
@@ -71,12 +72,21 @@ namespace Game1
                 isPatrolling = false;
                 targetPosition = targetTank.CurrentPosition;
                 orintation = position - targetPosition;   //opposite direction of the target 
+                            MovingToTarget(time);
+
             }
+            else if (distance > 400)
+            {
+                velocity = currentVelocity;
+                velocity += steer.pursue(targetTank.CurrentPosition, targetTank.velocity, position, currentVelocity);
+                position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                translation = Matrix.CreateTranslation(position);
+            }
+
             else
             {
                 isPatrolling = true;
             }
-            MovingToTarget(time);
             base.Update(gameTime);
 
         }
