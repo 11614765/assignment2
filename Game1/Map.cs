@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Game1
 {
@@ -19,7 +20,7 @@ namespace Game1
     {
         // Map data
         //private List<MapData> maps;
-        public List<Point> barrierList;
+        public List<Point> barrierList = new List<Point>();
         public MapTileType[,] mapTiles;
         //private int currentMap;
         public int numberColumns;
@@ -29,18 +30,18 @@ namespace Game1
 
         public Map()
         {
+
             numberColumns = 20;
             numberRows = 20;
-            barrierList = new List<Point>();
-            barrierList.Add(new Point(5, 8));
-            barrierList.Add(new Point(8, 8));
-            barrierList.Add(new Point(7, 8));
-            barrierList.Add(new Point(9, 8));
-            barrierList.Add(new Point(10, 8));
-            barrierList.Add(new Point(11, 8));
-            barrierList.Add(new Point(3, 5));
-            barrierList.Add(new Point(7, 7));
-            barrierList.Add(new Point(13, 13));
+            XElement mapstr = XElement.Load(@"Content/config/map.xml");
+          //  barrierList = new List<Point>();
+           
+            foreach (XElement position in mapstr.Elements()) {
+                int locationX = int.Parse(position.Attribute("positionX").Value);
+                int locationY = int.Parse(position.Attribute("positionY").Value);
+                barrierList.Add(new Point(locationX,locationY));
+               
+            }
             tileCenter = new Vector3(tileSize / 2, 0, tileSize / 2);
             mapTiles = new MapTileType[20, 20];
             int x = 0, y = 0;

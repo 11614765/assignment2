@@ -1,0 +1,16 @@
+<!--
+   Map Structure
+  each pair of position x and position y can not have the same value
+  -->
+  
+ <Map name = "obstacle">
+ <position positionX = "5" positionY = "9"/>
+ <position positionX = "8" positionY = "9"/>
+ <position positionX = "7" positionY = "9"/>
+ <position positionX = "9" positionY = "9"/>
+ <position positionX = "10" positionY = "9"/>
+ <position positionX = "11" positionY = "9"/>
+ <position positionX = "6" positionY = "9"/>
+ <position positionX = "12" positionY = "9"/>
+ <position positionX = "13" positionY = "9"/>
+ </Map>

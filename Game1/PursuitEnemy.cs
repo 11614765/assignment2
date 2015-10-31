@@ -19,7 +19,7 @@ namespace Game1
         public List<Vector3> pathdebug;
         public MousePicking mousepick;
         public Vector3 pickPosition;
-        public PursuitEnemy(Model model, Vector3 position,GraphicsDevice device, Camera camera)
+        public PursuitEnemy(Model model, Vector3 position,GraphicsDevice device, Camera camera,Tank tank)
             : base(model, device, camera)
         {
             tankBox = new BoundingBox(MIN, MAX);
@@ -35,6 +35,7 @@ namespace Game1
             initialAngle = MathHelper.PiOver2;
             moveorder = 0;
             mousepick = new MousePicking(device, camera);
+            targetTank = tank;
 
         }
 
@@ -104,7 +105,8 @@ namespace Game1
 
         protected override Matrix GetWorld()
         {
-            return Matrix.CreateScale(0.1f) * rotation * translation;
+            world = Matrix.CreateScale(0.1f) * rotation * translation;
+            return world;
         }
 
         public void TargetPlayer(Tank playerTank)
