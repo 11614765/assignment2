@@ -12,15 +12,15 @@ Allowed conditions:
 - PLAYER_FAR
 -->
 
-<fsm name ="state" startState="SEEK">
+<fsm name ="state" startState="PURSUE">
  
   
-  <state fromState="SEEK">
+  <state fromState="PURSUE">
     <transition condition="PLAYERNEAR" toState="FLEE" />
   </state>
   
   <state fromState="FLEE">
-    <transition condition="PLAYERFAR" toState="SEEK" />
+    <transition condition="PLAYERFAR" toState="PURSUE" />
   </state>
 
 </fsm>

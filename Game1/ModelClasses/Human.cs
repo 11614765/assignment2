@@ -12,7 +12,7 @@ namespace Game1
 
     public enum HumanState
     {
-        SEEK,
+        PURSUE,
         FLEE
     }
 
@@ -44,7 +44,7 @@ namespace Game1
         private double acceleration = 0.005;
         private float maxSpeed;
         private float minStopSpeed = 0.1f;
-        private float fleeDistance = 150;
+        private float fleeDistance = 160;
         private float boundary = 1000f;
         private float scale = 0.05f;
         private int mass = 10;
@@ -56,7 +56,7 @@ namespace Game1
         public Human(Model m, Vector3 Position, Tank tank, int speed) : base(m)
         {
 
-            humanState = HumanState.SEEK;
+            humanState = HumanState.PURSUE;
             this.position = Position;
             this.targetTank = tank;
             this.maxSpeed = speed;
@@ -64,7 +64,7 @@ namespace Game1
             currentVelocity = Vector3.Normalize(new Vector3(0, 0, 1)); 
 
             RandomPatrolPoint();
-            translation = Matrix.CreateTranslation(position);
+            //translation = Matrix.CreateTranslation(position);
             //behavious[0] = Flee;
             behavious = new Behavious[2];
             XElement states = XElement.Load(@"Content/config/fsm_Human.xml");
@@ -86,7 +86,7 @@ namespace Game1
                     {
                         behavious[i] = Flee;
                     }
-                    if (Todo.Attribute("toState").Value == "SEEK")
+                    if (Todo.Attribute("toState").Value == "PURSUE")
                     {
                         behavious[i] = Pursue;
                     }
@@ -117,9 +117,9 @@ namespace Game1
             {
                 humanState = HumanState.FLEE;
             }
-            if (distance> 300)
+            if (distance > 160)
             {
-                humanState = HumanState.SEEK;
+                humanState = HumanState.PURSUE;
             }
            
 
@@ -128,10 +128,10 @@ namespace Game1
                 behavious[0](gameTime);
 
             }
-            else if (humanState == HumanState.SEEK)
+            else if (humanState == HumanState.PURSUE)
             {
                 behavious[1](gameTime);
-
+                
             }
 
             else
@@ -151,9 +151,10 @@ namespace Game1
         private void Pursue(GameTime gameTime)
         {
             currentVelocity += steer.pursue(targetTank.CurrentPosition, targetTank.velocity, position, currentVelocity);
+            //currentVelocity += steer.seek(targetTank.CurrentPosition, position, currentVelocity);
             position += currentVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             translation = Matrix.CreateTranslation(position);
-            orintation = targetPosition - position;
+            //orintation = targetPosition - position;
         }
 
 
@@ -267,7 +268,7 @@ namespace Game1
         }
         protected override Matrix GetWorld()
         {
-            world = Matrix.CreateScale(.1f) * rotation * translation;
+            world = Matrix.CreateScale(.08f) * rotation * translation;
             return world;
         }
 
