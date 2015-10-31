@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using System.Xml.Linq;
 
 namespace Game1
 {
@@ -65,23 +65,37 @@ namespace Game1
             map = new Map();
             pathfinder = new Pathfinder(map);
             wallstone = new Wallstone[map.barrierList.Count];
+            XElement level = XElement.Load(@"Content/config/levelsetting.xml");
             //tank1 = new Tank1(Game.Content.Load<Model>(@"Models/Tank/tank"), ((Game1)Game).GraphicsDevice,
             //   ((Game1)Game).camera);
-            levelInfoList.Add(new LevelInfo(10,100,5,2,21,10,2));
-            levelInfoList.Add(new LevelInfo(900,2800,10,3,6,9,2));
-            levelInfoList.Add(new LevelInfo(800, 2600, 15, 4, 6, 8,3));
-            levelInfoList.Add(new LevelInfo(700, 2400,20, 5, 7, 7,3));
-            levelInfoList.Add(new LevelInfo(600, 2200, 25, 6, 7, 6,4));
-            levelInfoList.Add(new LevelInfo(500, 2000, 30, 7, 7, 5,4));
-            levelInfoList.Add(new LevelInfo(400, 1800, 35, 8, 7, 4,5));
-            levelInfoList.Add(new LevelInfo(300, 1600, 40, 8, 8, 3,5));
-            levelInfoList.Add(new LevelInfo(200, 1400, 45, 8, 8, 2,5));
-            levelInfoList.Add(new LevelInfo(100, 1200, 55, 8, 9, 1,6));
-            levelInfoList.Add(new LevelInfo(50, 1000, 60, 8, 9, 0,6));
-            levelInfoList.Add(new LevelInfo(50, 800, 65,8, 9, 0,6));
-            levelInfoList.Add(new LevelInfo(50, 600, 70, 8, 10, 0,6));
-            levelInfoList.Add(new LevelInfo(25, 400, 75, 8, 10, 0,6));
-            levelInfoList.Add(new LevelInfo(0, 200, 80, 8, 20, 0,6));
+            foreach (XElement levelnumber in level.Elements()) { 
+            foreach (XElement parameters in levelnumber.Elements())
+            {
+                levelInfoList.Add(new LevelInfo(int.Parse(parameters.Attribute("minSpawnTime").Value),
+                                int.Parse(parameters.Attribute("maxSpawnTime").Value),
+                                int.Parse(parameters.Attribute("numberEnemies").Value),
+                                int.Parse(parameters.Attribute("minspeed").Value),
+                                int.Parse(parameters.Attribute("maxSpeed").Value),
+                                int.Parse(parameters.Attribute("missAllowed").Value)
+                  ));
+             }
+            }
+        /*    levelInfoList.Add(new LevelInfo(10,100,5,2,21,10));
+            levelInfoList.Add(new LevelInfo(900,2800,10,3,6,9));
+            levelInfoList.Add(new LevelInfo(800, 2600, 15, 4, 6, 8));
+            levelInfoList.Add(new LevelInfo(700, 2400,20, 5, 7, 7));
+            levelInfoList.Add(new LevelInfo(600, 2200, 25, 6, 7, 6));
+            levelInfoList.Add(new LevelInfo(500, 2000, 30, 7, 7, 5));
+            levelInfoList.Add(new LevelInfo(400, 1800, 35, 8, 7, 4));
+            levelInfoList.Add(new LevelInfo(300, 1600, 40, 8, 8, 3));
+            levelInfoList.Add(new LevelInfo(200, 1400, 45, 8, 8, 2));
+            levelInfoList.Add(new LevelInfo(100, 1200, 55, 8, 9, 1));
+            levelInfoList.Add(new LevelInfo(50, 1000, 60, 8, 9, 0));
+            levelInfoList.Add(new LevelInfo(50, 800, 65,8, 9, 0));
+            levelInfoList.Add(new LevelInfo(50, 600, 70, 8, 10, 0));
+            levelInfoList.Add(new LevelInfo(25, 400, 75, 8, 10, 0));
+            levelInfoList.Add(new LevelInfo(0, 200, 80, 8, 20, 0));
+         */   
             this.game = game;
            
            
@@ -107,7 +121,7 @@ namespace Game1
                 wallstone[i] = new Wallstone(Game.Content.Load<Model>(@"Models/Obstacle/stone"), stoneposition);
                 obstacles.Add(wallstone[i]);
             }
-   
+            
             //for(int x=0; x<21; x++)
             //{
             //    for (int y = 0; y < 21; y++)
@@ -206,7 +220,7 @@ namespace Game1
 
             //Quadtree is use for reduce cpu time in relation to 
             //the collisions between bullets and enemy tanks
-            int worldSize = 600;
+            int worldSize = 1200;
             int maxDepth = 7;
             int maxNodeObject = 5;
             Point center = new Point(0, 0);
@@ -244,7 +258,7 @@ namespace Game1
                 
                 model.Update(gameTime);
             }
-
+                
 
             foreach (BasicModel model in obstacles)
             {
@@ -273,13 +287,13 @@ namespace Game1
                     }
                     else
                     {
-                        enemies.RemoveAt(i);
-                        ((Game1)Game).kill();
-                        --i;
-                        ((Game1)Game).reduceHealth();
-                        break;
-                    }
+                    enemies.RemoveAt(i);
+                    ((Game1)Game).kill();
+                    --i;
+                    ((Game1)Game).reduceHealth();
+                    break;
                 }
+            }
             }
 
             for (int i = 0;i< bullets.Count;i++)
@@ -301,7 +315,7 @@ namespace Game1
                         }
                         else
                         {
-                            ((Game1)Game).AddPoints();
+                        ((Game1)Game).AddPoints();
                         }
                         enemies.Remove(enemy);
                         

@@ -36,7 +36,7 @@ namespace Game1
         GameState currentGameState = GameState.START;
 
         //新加代码end---------------
-      
+
 
         MousePicking mousePick;
 
@@ -184,12 +184,13 @@ namespace Game1
 
             if (killed >= (int)modelManager.levelInfoList[modelManager.currentLevel].numberEnemies)
             {
-                if (modelManager.currentLevel > 14)
+                if (modelManager.currentLevel > 10)
                 {
                     ChangeGameState(GameState.END, level);
                 }
                 else
                 {
+                    
                     ChangeGameState(GameState.LEVEL_CHANGE, level++);
                     modelManager.enemyThisLevel = 0; 
                     modelManager.currentLevel++;
@@ -233,8 +234,7 @@ namespace Game1
             const float textSize = 0.2f;
 
             // Draw the current score //分数
-            string scoreText = "Score: " + score + " Health: " +health;
-            
+            string scoreText = "Score: " + score + " Health: " + health + " MaxEnemies: " + (int)modelManager.levelInfoList[modelManager.currentLevel].numberEnemies;
             base.Draw(gameTime);
             spriteBatch.Begin();
             //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
@@ -257,6 +257,8 @@ namespace Game1
         }
         public void ChangeGameState(GameState state, int level)
         {
+            killed = 0;
+            modelManager.enemyThisLevel = 0;
             currentGameState = state;
             switch (currentGameState)
             {
