@@ -12,7 +12,7 @@ Allowed conditions:
 - PLAYER_FAR
 -->
 
-<fsm name ="default" startState="SEEK">
+<fsm name ="state" startState="SEEK">
  
   
   <state fromState="SEEK">

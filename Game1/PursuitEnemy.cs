@@ -38,7 +38,7 @@ namespace Game1
             targetTank = tank;
 
 
-            XElement level = XElement.Load(@"Content/config/fsm_Human.xml");
+            
 
 
 
