@@ -60,31 +60,33 @@ namespace Game1
         public override void Update(GameTime gameTime)
         {
             cameraDirection = Vector3.Transform(cameraDirection,
-                Matrix.CreateFromAxisAngle(cameraUp, (-MathHelper.PiOver4 / 150) *
+                Matrix.CreateFromAxisAngle(cameraUp, (-MathHelper.PiOver4 / 700) *
                 (Mouse.GetState().X - preMouseState.X)));
             Vector3 crossNormalize = Vector3.Cross(cameraUp, cameraDirection);
             crossNormalize.Normalize();
             cameraDirection = Vector3.Transform(cameraDirection,
                 Matrix.CreateFromAxisAngle(crossNormalize,
-                (MathHelper.PiOver4 / 100) * (Mouse.GetState().Y - preMouseState.Y)));
+                (MathHelper.PiOver4 / 700) * (Mouse.GetState().Y - preMouseState.Y)));
             // Reset prevMouseState 
             
             preMouseState = Mouse.GetState();
-            if (Keyboard.GetState().IsKeyDown(Keys.W)) {
-                cameraPosition += cameraDirection * speed;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                cameraPosition -= cameraDirection * speed;
-            }
-            if(Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                cameraPosition += Vector3.Cross(cameraUp, cameraDirection) * speed;   
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                cameraPosition -= Vector3.Cross(cameraUp, cameraDirection) * speed;
-            }
+
+
+            //if (Keyboard.GetState().IsKeyDown(Keys.W)) {
+            //    cameraPosition += cameraDirection * speed;
+            //}
+            //if (Keyboard.GetState().IsKeyDown(Keys.S))
+            //{
+            //    cameraPosition -= cameraDirection * speed;
+            //}
+            //if(Keyboard.GetState().IsKeyDown(Keys.A))
+            //{
+            //    cameraPosition += Vector3.Cross(cameraUp, cameraDirection) * speed;   
+            //}
+            //if (Keyboard.GetState().IsKeyDown(Keys.D))
+            //{
+            //    cameraPosition -= Vector3.Cross(cameraUp, cameraDirection) * speed;
+            //}
            // if (Keyboard.GetState().IsKeyDown(Keys.Space)) 
            // {
             //    cameraPosition += cameraUp;

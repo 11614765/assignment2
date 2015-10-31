@@ -31,7 +31,8 @@ namespace Game1
         ButtonState preMouseLeftButton = Mouse.GetState().LeftButton;
         MousePicking mousePick;
         public Vector3 PickPosition { get; set; }
-        Camera camera;
+        Camera tankcamera;
+        Vector3 currentCameraDirection;
 
         //bounding box
         public readonly Vector3 MIN = new Vector3(-40, 0, -40);
@@ -83,8 +84,9 @@ namespace Game1
         public Tank(Model model, GraphicsDevice device, Camera camera)
             : base(model)
         {
-            this.camera = camera; 
+            this.tankcamera = camera; 
             mousePick = new MousePicking(device, camera);
+            currentCameraDirection = tankcamera.cameraDirection;
             //载入模型
             turretBone = model.Bones["turret_geo"];
             canonBone = model.Bones["canon_geo"];
@@ -121,9 +123,9 @@ namespace Game1
             //max = MAX + CurrentPosition;
             //tankBox = new BoundingBox(min, max);
 
-            turretRotationValue = (float)Math.Atan2(camera.cameraDirection.X, camera.cameraDirection.Z) + MathHelper.Pi;
-            canonRotationValue = (float)Math.Atan2(camera.cameraDirection.Y,camera.cameraDirection.Z ) + MathHelper.Pi - MathHelper.Pi/180 *20;
-            
+            turretRotationValue = (float)Math.Atan2(tankcamera.cameraDirection.X, tankcamera.cameraDirection.Z) + MathHelper.Pi;
+            canonRotationValue = (float)Math.Atan2(tankcamera.cameraDirection.Y,tankcamera.cameraDirection.Z ) + MathHelper.Pi - MathHelper.Pi/180 *20;
+            UpdateCamera();
             //float speed = 10;
             float time = (gameTime.ElapsedGameTime.Milliseconds)/1000f;
             
@@ -302,6 +304,15 @@ namespace Game1
                 CurrentPosition.Z = minBoundary;
             if (CurrentPosition.Z < -minBoundary)
                 CurrentPosition.Z = -minBoundary;
+        }
+
+        private void UpdateCamera()
+        {
+
+            Vector3 newCameraPosition = CurrentPosition - currentCameraDirection * 500;
+
+            tankcamera.cameraPosition = newCameraPosition;
+
         }
 
     }
