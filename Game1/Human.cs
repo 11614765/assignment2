@@ -30,7 +30,6 @@ namespace Game1
         private Vector3 position;
         private Vector3 targetPosition;
         private Vector3 orintation;
-        public Vector3 velocity;
         private Vector3 currentVelocity;
         private Vector3 desiredVelocity;
         private Vector3 steeringForce;
@@ -38,12 +37,12 @@ namespace Game1
         private double currentSpeed = 0;
         private double rotationSpeed = MathHelper.PiOver4 / 200;
         private double orintationAngle;
-        private double tankAngle = 0;//MathHelper.PiOver2;
+        private double ghostAngle = 0;//MathHelper.PiOver2;
 
         private double acceleration = 0.005;
         private float maxSpeed;
         private float minStopSpeed = 0.1f;
-        private float fleeDistance = 300;
+        private float fleeDistance = 180;
         private float boundary = 1000f;
         private float scale = 0.05f;
         private int mass = 10;
@@ -103,12 +102,13 @@ namespace Game1
                             MovingToTarget(time);
 
             }
-            else if (distance > 400)
+            else if (distance > 250)
             {
-                velocity = currentVelocity;
-                velocity += steer.pursue(targetTank.CurrentPosition, targetTank.velocity, position, currentVelocity);
-                position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                
+                currentVelocity += steer.pursue(targetTank.CurrentPosition, targetTank.velocity, position, currentVelocity);
+                position += currentVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 translation = Matrix.CreateTranslation(position);
+                orintation = targetPosition - position;
             }
 
             else
@@ -127,7 +127,7 @@ namespace Game1
             if (currentVelocity.Length() > 1)
                 currentVelocity.Normalize();
             currentVelocity *= (float)currentSpeed;
-            //Flee tank will flee opposite way of player if player is in flee distance range
+            //ghost will flee away from player if player is in flee distance range
             if ((targetPosition - position).Length() < fleeDistance)
             {
                 isMoving = true;
@@ -139,14 +139,13 @@ namespace Game1
                 else
                     currentSpeed = maxSpeed;
                 currentVelocity *= (float)currentSpeed;
-                //steering behavior of the enemy tank
+                //steering behavior of the ghost
                 Steering(time);
-                //update 9/5
-                RotateTank(turnedAngle);
+                RotateGhost(turnedAngle);
             }
             else
             {
-                //smoothly slow down, acceleration here is also brake force
+
                 if (Math.Abs(currentSpeed) < minStopSpeed)
                     currentSpeed = 0;
                 if (currentSpeed > 0)
@@ -155,9 +154,9 @@ namespace Game1
                 }
                 else
                     currentSpeed = 0;
-                //steering behavior of the enemy tank
+
                 Steering(time);
-                RotateTank(turnedAngle);
+                RotateGhost(turnedAngle);
                 isMoving = false;
             }
         }
@@ -175,35 +174,35 @@ namespace Game1
                 position.Z = -minBoundary;
         }
 
-        private void RotateTank(double turnedAngle)
+        private void RotateGhost(double turnedAngle)
         {
-            //rotate the tank fram axis Y
-            if (tankAngle > MathHelper.Pi || tankAngle < -MathHelper.Pi)
+
+            if (ghostAngle > MathHelper.Pi || ghostAngle < -MathHelper.Pi)
             {
-                tankAngle = orintationAngle;
+                ghostAngle = orintationAngle;
             }
-            double angleDifference = tankAngle - orintationAngle;
+            double angleDifference = ghostAngle - orintationAngle;
             if (Math.Abs(angleDifference) < MathHelper.PiOver4 / 10)
             {
                 rotation = Matrix.CreateRotationY((float)orintationAngle);
             }
             else
             {
-                if (tankAngle > 0)
+                if (ghostAngle > 0)
                 {
                     if (angleDifference > 0 && angleDifference < MathHelper.Pi)
-                        tankAngle -= turnedAngle;
+                        ghostAngle -= turnedAngle;
                     else
-                        tankAngle += turnedAngle;
+                        ghostAngle += turnedAngle;
                 }
                 else
                 {
                     if (angleDifference > -MathHelper.Pi && angleDifference < 0)
-                        tankAngle += turnedAngle;
+                        ghostAngle += turnedAngle;
                     else
-                        tankAngle -= turnedAngle;
+                        ghostAngle -= turnedAngle;
                 }
-                rotation = Matrix.CreateRotationY((float)tankAngle);
+                rotation = Matrix.CreateRotationY((float)ghostAngle);
             }
         }
 
