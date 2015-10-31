@@ -4,13 +4,13 @@
   -->
   
  <Map name = "obstacle">
- <position positionX = "5" positionY = "9"/>
- <position positionX = "8" positionY = "9"/>
- <position positionX = "7" positionY = "9"/>
- <position positionX = "9" positionY = "9"/>
- <position positionX = "10" positionY = "9"/>
- <position positionX = "11" positionY = "9"/>
- <position positionX = "6" positionY = "9"/>
- <position positionX = "12" positionY = "9"/>
- <position positionX = "13" positionY = "9"/>
+ <position positionX = "7" positionY = "7"/>
+ <position positionX = "8" positionY = "7"/>
+ <position positionX = "13" positionY = "7"/>
+ <position positionX = "14" positionY = "7"/>
+ <position positionX = "8" positionY = "15"/>
+ <position positionX = "9" positionY = "15"/>
+ <position positionX = "10" positionY = "15"/>
+ <position positionX = "12" positionY = "15"/>
+ <position positionX = "11" positionY = "15"/> 
  </Map>

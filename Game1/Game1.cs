@@ -155,7 +155,7 @@ namespace Game1
             // TODO: Add your update logic here
             if (shotCountdown <= 0)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                if (Mouse.GetState().RightButton == ButtonState.Pressed)
                 {
 
                     Vector3? pickpos;
@@ -225,8 +225,8 @@ namespace Game1
             //effect.Projection = camera.projection;
 
             string message1 = "mousePosition:" + modelManager.PickPositionString;
-            string message2 = "currentPosition:" + modelManager.CurrentPosition;
-            //string message3 = "count:" + modelManager.count.ToString();
+            //string message2 = "currentPosition:" + modelManager.CurrentPosition;
+            string message3 = "objective:detroy enemy tank but don't shot ghost\n left mouse to move,right mouse to shot";
             //string message4 = "pick:" + modelManager.cur.ToString();
             //string message5 = "cur:" + modelManager.pos.ToString();
 
@@ -246,7 +246,7 @@ namespace Game1
             //spriteBatch.DrawString(font, message1, Vector2.Zero, Color.Red, 0, textOrigin, textSize, 0, 0);
             //spriteBatch.DrawString(font, message2, new Vector2(15, 15), Color.Red, 0, textOrigin, textSize, 0, 0);
             spriteBatch.DrawString(scoreFont, scoreText, new Vector2(0, 0), Color.Red); 
-            spriteBatch.DrawString(scoreFont, message2, new Vector2(0, 20), Color.Red);
+            spriteBatch.DrawString(scoreFont, message3, new Vector2(0, 20), Color.Red);
             //spriteBatch.DrawString(scoreFont, scoreText, new Vector2(0, 0), Color.Red);
             //spriteBatch.DrawString(font, message3, new Vector2(20, 40), Color.Red);
             //spriteBatch.DrawString(font, message4, new Vector2(20, 60), Color.Red);
