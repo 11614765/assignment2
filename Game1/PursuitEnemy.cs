@@ -45,20 +45,24 @@ namespace Game1
             tankBox = new BoundingBox(min, max);
             //float distance = Vector3.Subtract(targetTank.CurrentPosition, this.CurrentPosition).Length();
 //distance > Tank.destinationThreshold &&            
-            //if ( tankBox.Contains(targetTank.tankBox) == ContainmentType.Disjoint)
-            //{
-            //    
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && mousepick.GetCollisionPosition().HasValue == true)
+            if (tankBox.Contains(targetTank.tankBox) == ContainmentType.Disjoint)
             {
+                
+            //if (Mouse.GetState().LeftButton == ButtonState.Pressed && mousepick.GetCollisionPosition().HasValue == true)
+            //{
                 pickPosition = mousepick.GetCollisionPosition().Value; 
                 Point start = Map.WorldToMap(CurrentPosition);
 
-                //Point end = Map.WorldToMap(targetTank.CurrentPosition);
-                Point end = Map.WorldToMap(pickPosition);
-
+                Point end = Map.WorldToMap(targetTank.CurrentPosition);
+                //Point end = Map.WorldToMap(pickPosition);
+                if (end.X < 20 && end.X>=0&&end.Y < 20&&end.Y>=0)
+                {
                 pathfinder = new Pathfinder(map);
                 path = pathfinder.FindPath(start, end);
-                //pathdebug = path;
+                //pathdebug = path; 
+                }
+
+
             }
 
             if(path!=null&& moveorder<path.Count)

@@ -108,15 +108,26 @@ namespace Game1
                 obstacles.Add(wallstone[i]);
             }
    
-            for(int x=0; x<12; x++)
+            //for(int x=0; x<21; x++)
+            //{
+            //    for (int y = 0; y < 21; y++)
+            //    {
+            //        if (y == 0 ||x==0 || y==20||x==20)
+            //        { 
+            //            AddWall(-1200 + y * 120, -1200 + x * 120);
+            //        }
+
+
+            //    }
+            //}
+            for (int x = -1 * 1200; x <= 1200; x += 120)
             {
-                for (int y = 0; y < 12; y++)
-                {
-                    if (y == 0 ||x==0 || y==11||x==11)
-                    { 
-                        AddWall(-600 + y * 100, -600 + x * 100);
-                    }
-                }
+                AddWall(x, 1200);
+                AddWall(x, -1200);
+                AddWall(1200, x);
+                AddWall(-1200, x);
+
+
             }
 
 
