@@ -39,28 +39,28 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BasicModel.cs" />
-    <Compile Include="Bullet.cs" />
+    <Compile Include="ModelClasses\BasicModel.cs" />
+    <Compile Include="ModelClasses\Bullet.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Gronud.cs" />
-    <Compile Include="Human.cs" />
+    <Compile Include="ModelClasses\Gronud.cs" />
+    <Compile Include="ModelClasses\Human.cs" />
     <Compile Include="LevelInfo.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="ModelManager.cs" />
+    <Compile Include="ModelClasses\ModelManager.cs" />
     <Compile Include="MousePicking.cs" />
-    <Compile Include="Pathfinder.cs" />
+    <Compile Include="ModelClasses\Pathfinder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PursuitEnemy.cs" />
-    <Compile Include="Quadtree.cs" />
-    <Compile Include="SkyBox.cs" />
+    <Compile Include="ModelClasses\PursuitEnemy.cs" />
+    <Compile Include="ModelClasses\Quadtree.cs" />
+    <Compile Include="ModelClasses\SkyBox.cs" />
     <Compile Include="SplashScreen.cs" />
-    <Compile Include="Steering.cs" />
-    <Compile Include="Tank.cs" />
-    <Compile Include="TankEnemy.cs" />
+    <Compile Include="ModelClasses\Steering.cs" />
+    <Compile Include="ModelClasses\Tank.cs" />
+    <Compile Include="ModelClasses\TankEnemy.cs" />
     <Compile Include="Text.cs" />
-    <Compile Include="Wallstone.cs" />
+    <Compile Include="ModelClasses\Wallstone.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

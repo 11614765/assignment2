@@ -12,7 +12,7 @@ namespace Game1
 
     public enum HumanState
     {
-        SEEK,
+        PURSUE,
         FLEE
     }
 
@@ -56,7 +56,7 @@ namespace Game1
         public Human(Model m, Vector3 Position, Tank tank, int speed) : base(m)
         {
 
-            humanState = HumanState.SEEK;
+            humanState = HumanState.PURSUE;
             this.position = Position;
             this.targetTank = tank;
             this.maxSpeed = speed;
@@ -86,7 +86,7 @@ namespace Game1
                     {
                         behavious[i] = Flee;
                     }
-                    if (Todo.Attribute("toState").Value == "SEEK")
+                    if (Todo.Attribute("toState").Value == "PURSUE")
                     {
                         behavious[i] = Pursue;
                     }
@@ -119,7 +119,7 @@ namespace Game1
             }
             if (distance > 160)
             {
-                humanState = HumanState.SEEK;
+                humanState = HumanState.PURSUE;
             }
            
 
@@ -128,7 +128,7 @@ namespace Game1
                 behavious[0](gameTime);
 
             }
-            else if (humanState == HumanState.SEEK)
+            else if (humanState == HumanState.PURSUE)
             {
                 behavious[1](gameTime);
                 
