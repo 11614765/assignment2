@@ -169,7 +169,7 @@ namespace Game1
         }
         private void SpawnEnemy()
         {
-            Vector3 position = new Vector3(0, 0, -1100)
+            Vector3 position = new Vector3(0, 0, -1100);
             Random random = new Random();
             int spwanIndex = random.Next(3);
             if (spwanIndex == 0)
@@ -246,6 +246,7 @@ namespace Game1
             Point center = new Point(0, 0);
             Quadtree quadtree_Enemy = new Quadtree (worldSize,maxDepth,maxNodeObject,center);
             Quadtree quadtree_obstacles = new Quadtree(worldSize, maxDepth, maxNodeObject, center);
+            
 
             //if (pursuitenemy.pathdebug != null)
             //{
@@ -315,6 +316,25 @@ namespace Game1
                 }
             }
             }
+             
+            for (int i = 0; i< bullets.Count;i++)
+            {
+                float x = bullets[i].world.Translation.X;
+                float y = bullets[i].world.Translation.Z;
+                Quadtree nearWalls = quadtree_obstacles.GetNodeContaining(x, y);
+
+                foreach (BasicModel walls in obstacles)
+                {
+                    if (bullets[i].CollidesWith(walls.model, walls.world))
+                    {
+                        bullets.RemoveAt(i);
+                        i--;
+                        break;
+                    }
+                }
+            }
+
+
 
             for (int i = 0;i< bullets.Count;i++)
             {
@@ -322,6 +342,7 @@ namespace Game1
                 float y = bullets[i].world.Translation.Z;
                 //Enemies collides with player (player health -)
                 Quadtree nearEnemies = quadtree_Enemy.GetNodeContaining(x, y);
+                
 
                 foreach (BasicModel enemy in nearEnemies.models)
                 {
