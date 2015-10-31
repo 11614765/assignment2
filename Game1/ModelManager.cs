@@ -174,7 +174,7 @@ namespace Game1
             int spwanIndex = random.Next(3);
             if (spwanIndex == 0)
             {
-                position = new Vector3(-1100, 0, -1100);
+                position = new Vector3(-900, 0, -900);
             }
             if (spwanIndex == 1)
             {
@@ -182,7 +182,7 @@ namespace Game1
             }
             if (spwanIndex == 2)
             {
-                position = new Vector3(1100, 0, -1100);
+                position = new Vector3(900, 0, -900);
             }
 
 

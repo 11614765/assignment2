@@ -61,7 +61,7 @@ namespace Game1
             this.targetTank = tank;
             this.maxSpeed = speed;
 
-            currentVelocity = Vector3.Normalize(new Vector3(0, 0, 1));
+            currentVelocity = Vector3.Normalize(new Vector3(0, 0, 1)); 
 
             RandomPatrolPoint();
             translation = Matrix.CreateTranslation(position);
@@ -77,7 +77,7 @@ namespace Game1
                     if (Todo.Attribute("condition").Value == "PLAYERNEAR")
                     {
                         i = 0;
-                    }
+        }
                     if (Todo.Attribute("condition").Value == "PLAYERFAR")
                     {
                         i = 1;
@@ -121,7 +121,7 @@ namespace Game1
             {
                 humanState = HumanState.SEEK;
             }
-
+           
 
             if (humanState == HumanState.FLEE)
             {
@@ -131,12 +131,12 @@ namespace Game1
             else if (humanState == HumanState.SEEK)
             {
                 behavious[1](gameTime);
-
+                
             }
 
             else
             {
-
+               
             }
             base.Update(gameTime);
 
@@ -169,7 +169,7 @@ namespace Game1
             if ((targetPosition - position).Length() < fleeDistance)
             {
                 isMoving = true;
-
+                
                 if (currentSpeed < maxSpeed)
                 {
                     currentSpeed += acceleration * time;
