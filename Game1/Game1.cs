@@ -224,7 +224,7 @@ namespace Game1
             //effect.View = camera.view;
             //effect.Projection = camera.projection;
 
-            string message1 = "mousePosition:" + modelManager.PickPosition;
+            string message1 = "mousePosition:" + modelManager.PickPositionString;
             string message2 = "currentPosition:" + modelManager.CurrentPosition;
             //string message3 = "count:" + modelManager.count.ToString();
             //string message4 = "pick:" + modelManager.cur.ToString();

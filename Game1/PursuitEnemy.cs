@@ -19,11 +19,11 @@ namespace Game1
         public List<Vector3> pathdebug;
         public MousePicking mousepick;
         public Vector3 pickPosition;
-        public PursuitEnemy(Model model, GraphicsDevice device, Camera camera)
+        public PursuitEnemy(Model model, Vector3 position,GraphicsDevice device, Camera camera)
             : base(model, device, camera)
         {
             tankBox = new BoundingBox(MIN, MAX);
-            CurrentPosition = new Vector3(-500, 0, -500);
+            CurrentPosition = position;
             pickPosition = CurrentPosition;
             translation = Matrix.CreateTranslation(Map.MapToWorld(new Point(10, 10)));
             velocity = Vector3.Zero;
@@ -91,6 +91,10 @@ namespace Game1
             }
             //base.Update(gametime);
             //turretRorationValue = (float)Math.Sin(gametime.TotalGameTime.TotalSeconds);
+
+
+
+
         }
 
         public override void Draw(GraphicsDevice device, Camera camera)
