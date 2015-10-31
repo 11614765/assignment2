@@ -91,6 +91,10 @@ namespace Game1
             }
             //base.Update(gametime);
             //turretRorationValue = (float)Math.Sin(gametime.TotalGameTime.TotalSeconds);
+
+
+
+
         }
 
         public override void Draw(GraphicsDevice device, Camera camera)

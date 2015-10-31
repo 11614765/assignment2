@@ -250,6 +250,7 @@ namespace Game1
             Quadtree quadtree_Enemy = new Quadtree (worldSize,maxDepth,maxNodeObject,center);
             Quadtree quadtree_obstacles = new Quadtree(worldSize, maxDepth, maxNodeObject, center);
 
+
             //if (pursuitenemy.pathdebug != null)
             //{
             //    foreach (Vector3 track in pursuitenemy.pathdebug)
@@ -319,12 +320,32 @@ namespace Game1
             }
             }
 
+            for (int i = 0; i< bullets.Count;i++)
+            {
+                float x = bullets[i].world.Translation.X;
+                float y = bullets[i].world.Translation.Z;
+                Quadtree nearWalls = quadtree_obstacles.GetNodeContaining(x, y);
+
+                foreach (BasicModel walls in obstacles)
+                {
+                    if (bullets[i].CollidesWith(walls.model, walls.world))
+                    {
+                        bullets.RemoveAt(i);
+                        i--;
+                        break;
+                    }
+                }
+            }
+
+
+
             for (int i = 0;i< bullets.Count;i++)
             {
                 float x= bullets[i].world.Translation.X;
                 float y = bullets[i].world.Translation.Z;
                 //Enemies collides with player (player health -)
                 Quadtree nearEnemies = quadtree_Enemy.GetNodeContaining(x, y);
+
 
                 foreach (BasicModel enemy in nearEnemies.models)
                 {
