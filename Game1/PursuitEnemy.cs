@@ -50,7 +50,7 @@ namespace Game1
                 
             //if (Mouse.GetState().LeftButton == ButtonState.Pressed && mousepick.GetCollisionPosition().HasValue == true)
             //{
-                pickPosition = mousepick.GetCollisionPosition().Value; 
+                //pickPosition = mousepick.GetCollisionPosition().Value; 
                 Point start = Map.WorldToMap(CurrentPosition);
 
                 Point end = Map.WorldToMap(targetTank.CurrentPosition);

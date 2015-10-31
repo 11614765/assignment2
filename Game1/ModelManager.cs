@@ -173,9 +173,9 @@ namespace Game1
                     {
                         for (int i=0; i<levelInfoList[currentLevel].numHuman; i++)
                         {
-                            Vector3 humPosition = new Vector3(((Game1)Game).rnd.Next(-2000, (int)maxSpawnLocation.X),
+                            Vector3 humPosition = new Vector3(((Game1)Game).rnd.Next(-1000, 1000),
                                 0,
-                                ((Game1)Game).rnd.Next((int)maxSpawnLocation.Z, -100));
+                                ((Game1)Game).rnd.Next(-1000, 1000));
                             enemies.Add(new Human(Game.Content.Load<Model>(@"Models/Tank/anna"), humPosition, tank, 3));
 
                         }

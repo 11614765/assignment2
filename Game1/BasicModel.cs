@@ -11,6 +11,7 @@ namespace Game1
     {
         public Model model { get; protected set; }
        public Matrix world = Matrix.Identity;
+       protected Matrix translation = Matrix.Identity;
         public BasicModel(Model model) {
             this.model = model;
         }

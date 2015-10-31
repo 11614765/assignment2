@@ -73,7 +73,7 @@ namespace Game1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            camera = new Camera(this, new Vector3(0, 300, 500), new Vector3(0,25,0), Vector3.Up);
+            camera = new Camera(this, new Vector3(0, 700, 700), new Vector3(0,25,0), Vector3.Up);
             Components.Add(camera);
 
             modelManager = new ModelManager(this);
