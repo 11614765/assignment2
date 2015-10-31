@@ -11,6 +11,8 @@ namespace Game1
 {
     class ModelManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
+
+
         //位置
         private string currentPosition;
         private string pickPosition;
@@ -20,7 +22,7 @@ namespace Game1
 
         }
 
-        public string PickPosition
+        public string PickPositionString
         {
             get { return pickPosition; }
 
@@ -76,7 +78,7 @@ namespace Game1
                                 int.Parse(parameters.Attribute("numberEnemies").Value),
                                 int.Parse(parameters.Attribute("minspeed").Value),
                                 int.Parse(parameters.Attribute("maxSpeed").Value),
-                                int.Parse(parameters.Attribute("missAllowed").Value)
+                                int.Parse(parameters.Attribute("missAllowed").Value),2
                   ));
              }
             }
@@ -114,7 +116,7 @@ namespace Game1
             models.Add(new SkyBox(
                    Game.Content.Load<Model>(@"Models/Skybox/skybox")));
             tank = new Tank(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
-            pursuitenemy = new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
+            //pursuitenemy = new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
             for (int i = 0; i < wallstone.Length; i++)
             {
                 Vector3 stoneposition = map.MapToWorld(map.barrierList[i], true);
@@ -155,8 +157,8 @@ namespace Game1
             models.Add(ground);
             //models.Add(new SkyBox(Game.Content.Load<Model>(@"Models/SkyBox/skybox")));
             models.Add(tank);
-            models.Add(pursuitenemy);
-            pursuitenemy.TargetPlayer(tank);
+            //models.Add(pursuitenemy);
+            //pursuitenemy.TargetPlayer(tank);
 
             //foreach (BasicModel wallstonemodel in wallstone)
             //{
@@ -166,13 +168,33 @@ namespace Game1
         }
         private void SpawnEnemy()
         {
-            Vector3 position = new Vector3(((Game1)Game).rnd.Next(-2000,(int)maxSpawnLocation.X),
-                0,
-                ((Game1)Game).rnd.Next((int)maxSpawnLocation.Z,-100));
-            Vector3 direction = new Vector3(0, 0, tank.CurrentPosition.Z);
-               
-          //  float rollRotation = (float)(((Game1)Game).rnd.NextDouble()*maxRollAngle - (maxRollAngle/2));
-            enemies.Add(new TankEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, tank,levelInfoList[currentLevel].minSpeed));
+            Vector3 position = new Vector3(0, 0, -1100);
+            Random random = new Random();
+            int spwanIndex = random.Next(3);
+            if (spwanIndex == 0)
+            {
+                position = new Vector3(-1100, 0, -1100);
+            }
+            if (spwanIndex == 1)
+            {
+                position = new Vector3(0, 0, -1100);
+            }
+            if (spwanIndex == 2)
+            {
+                position = new Vector3(1100, 0, -1100);
+            }
+
+
+            //Vector3 position = new Vector3(((Game1)Game).rnd.Next(-2000,(int)maxSpawnLocation.X),
+            //    0,
+            //    ((Game1)Game).rnd.Next((int)maxSpawnLocation.Z,-100));
+            //Vector3 direction = new Vector3(0, 0, tank.CurrentPosition.Z);
+
+            //  float rollRotation = (float)(((Game1)Game).rnd.NextDouble()*maxRollAngle - (maxRollAngle/2));
+            //enemies.Add(new TankEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, tank,levelInfoList[currentLevel].minSpeed));
+            pursuitenemy =new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
+            pursuitenemy.TargetPlayer(tank);
+            enemies.Add(pursuitenemy);
             ++enemyThisLevel;
             SetNextSpawnTime();
         }
@@ -220,7 +242,7 @@ namespace Game1
 
             //Quadtree is use for reduce cpu time in relation to 
             //the collisions between bullets and enemy tanks
-            int worldSize = 1200;
+            int worldSize = 2400;
             int maxDepth = 7;
             int maxNodeObject = 5;
             Point center = new Point(0, 0);
@@ -309,7 +331,7 @@ namespace Game1
                     {
                         bullets.RemoveAt(i);
                         ((Game1)Game).soundHit.Play();
-                        if (enemies[i] is Human)
+                        if (enemy is Human)
                         {
                             ((Game1)Game).DeductPoints();
                         }
@@ -333,8 +355,13 @@ namespace Game1
 
                 if (model.CollidesWith(tank.model,tank.world))
                 {
-                    tank.velocity = Vector3.Zero;
 
+
+                    tank.CurrentPosition = tank.CurrentPosition - tank.velocity*(gameTime.ElapsedGameTime.Milliseconds) /100;
+                    tank.velocity = Vector3.Zero;
+                    //tank.tankDirection = -tank.tankDirection;
+                    //tank.PickPosition = tank.CurrentPosition;
+                    
                 }
             }
 
