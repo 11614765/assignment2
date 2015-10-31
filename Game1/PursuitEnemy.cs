@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
-
+using System.Xml.Linq;
 namespace Game1
 {
     class PursuitEnemy : Tank
@@ -36,6 +36,11 @@ namespace Game1
             moveorder = 0;
             mousepick = new MousePicking(device, camera);
             targetTank = tank;
+
+
+            XElement level = XElement.Load(@"Content/config/fsm_Human.xml");
+
+
 
         }
 

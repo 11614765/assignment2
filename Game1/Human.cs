@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml.Linq;
 
 namespace Game1
 {
@@ -13,6 +14,13 @@ namespace Game1
         SEEK,
         FLEE
     }
+
+    public enum HumanConditions
+    {
+        TANKNEAR,
+        TANKFAR
+    }
+
     class Human : BasicModel
     {
         private Tank targetTank;
@@ -42,10 +50,11 @@ namespace Game1
         HumanState humanState;
         Steering steer = new Steering(100f, 100f);
         private bool isMoving;
-        private bool isPatrolling;
+
 
         public Human (Model m, Vector3 Position, Tank tank, int speed) : base(m)
         {
+
             humanState = HumanState.SEEK;
             this.position = Position;
             this.targetTank = tank;
@@ -59,6 +68,7 @@ namespace Game1
 
         public override void Update(GameTime gameTime)
         {
+
             //tankPosition = tank1.CurrentPosition;
             //direction = tankPosition - world.Translation;
             //direction.Normalize();
@@ -74,9 +84,20 @@ namespace Game1
             //}
             int time = gameTime.ElapsedGameTime.Milliseconds;
             float distance = (targetTank.CurrentPosition - this.position).Length();
+
+            if (distance< fleeDistance)
+            {
+                humanState = HumanState.FLEE;
+            }
+            if (distance > >400)
+            {
+                humanState = HumanState.SEEK;
+            }
+           
+
             if (distance < fleeDistance)
             {
-                isPatrolling = false;
+                
                 targetPosition = targetTank.CurrentPosition;
                 orintation = position - targetPosition;   //opposite direction of the target 
                             MovingToTarget(time);
@@ -92,7 +113,7 @@ namespace Game1
 
             else
             {
-                isPatrolling = true;
+               
             }
             base.Update(gameTime);
 
