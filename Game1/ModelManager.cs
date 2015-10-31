@@ -78,7 +78,8 @@ namespace Game1
                                 int.Parse(parameters.Attribute("numberEnemies").Value),
                                 int.Parse(parameters.Attribute("minspeed").Value),
                                 int.Parse(parameters.Attribute("maxSpeed").Value),
-                                int.Parse(parameters.Attribute("missAllowed").Value),2
+                                int.Parse(parameters.Attribute("missAllowed").Value),
+                                int.Parse(parameters.Attribute("numHuman").Value)
                   ));
              }
             }
@@ -168,29 +169,12 @@ namespace Game1
         }
         private void SpawnEnemy()
         {
-            Vector3 position = new Vector3(0, 0, -1100);
-            Random random = new Random();
-            int spwanIndex = random.Next(3);
-            if (spwanIndex == 0)
-            {
-                position = new Vector3(-1100, 0, -1100);
-            }
-            if (spwanIndex == 1)
-            {
-                position = new Vector3(0, 0, -1100);
-            }
-            if (spwanIndex == 2)
-            {
-                position = new Vector3(1100, 0, -1100);
-            }
-
-
-            //Vector3 position = new Vector3(((Game1)Game).rnd.Next(-2000,(int)maxSpawnLocation.X),
-            //    0,
-            //    ((Game1)Game).rnd.Next((int)maxSpawnLocation.Z,-100));
-            //Vector3 direction = new Vector3(0, 0, tank.CurrentPosition.Z);
-
-            //  float rollRotation = (float)(((Game1)Game).rnd.NextDouble()*maxRollAngle - (maxRollAngle/2));
+            Vector3 position = new Vector3(((Game1)Game).rnd.Next(-2000,(int)maxSpawnLocation.X),
+                0,
+                ((Game1)Game).rnd.Next((int)maxSpawnLocation.Z,-100));
+            Vector3 direction = new Vector3(0, 0, tank.CurrentPosition.Z);
+               
+          //  float rollRotation = (float)(((Game1)Game).rnd.NextDouble()*maxRollAngle - (maxRollAngle/2));
             //enemies.Add(new TankEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, tank,levelInfoList[currentLevel].minSpeed));
             pursuitenemy =new PursuitEnemy(Game.Content.Load<Model>(@"Models/Tank/tank"), position, (((Game1)Game).GraphicsDevice), ((Game1)Game).camera);
             pursuitenemy.TargetPlayer(tank);
@@ -355,13 +339,8 @@ namespace Game1
 
                 if (model.CollidesWith(tank.model,tank.world))
                 {
-
-
-                    tank.CurrentPosition = tank.CurrentPosition - tank.velocity*(gameTime.ElapsedGameTime.Milliseconds) /100;
                     tank.velocity = Vector3.Zero;
-                    //tank.tankDirection = -tank.tankDirection;
-                    //tank.PickPosition = tank.CurrentPosition;
-                    
+
                 }
             }
 
