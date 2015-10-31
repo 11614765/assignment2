@@ -4,10 +4,10 @@
  
  <fsm name = "level setting">
   <levelnumber name = "level0">
-   <parameters minSpawnTime = "1000" maxSpawnTime = "3000" numberEnemies = "10" minspeed = "2" maxSpeed = "4" missAllowed = "10" numHuman ="2"/>
+   <parameters minSpawnTime = "1000" maxSpawnTime = "3000" numberEnemies = "6" minspeed = "2" maxSpeed = "4" missAllowed = "10" numHuman ="6"/>
    </levelnumber>
    <levelnumber name = "level1">
-   <parameters minSpawnTime = "90" maxSpawnTime = "2800" numberEnemies = "20" minspeed = "4" maxSpeed = "6" missAllowed = "9" numHuman ="2"/>
+   <parameters minSpawnTime = "90" maxSpawnTime = "2800" numberEnemies = "40" minspeed = "4" maxSpeed = "18" missAllowed = "9" numHuman ="6"/>
    </levelnumber>
     <levelnumber name = "level3">
    <parameters minSpawnTime = "800" maxSpawnTime = "2600" numberEnemies = "25" minspeed = "6" maxSpeed = "8" missAllowed = "8" numHuman ="3"/>
