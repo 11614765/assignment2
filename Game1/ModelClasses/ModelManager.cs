@@ -357,6 +357,7 @@ namespace Game1
                         if (enemy is Human)
                         {
                             ((Game1)Game).DeductPoints();
+                             ((Game1)Game).reduceHealth();
                         }
                         else
                         {

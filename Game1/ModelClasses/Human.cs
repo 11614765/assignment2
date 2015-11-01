@@ -67,7 +67,7 @@ namespace Game1
 
             currentVelocity = Vector3.Normalize(new Vector3(0, 0, 1));
 
-            RandomPatrolPoint();
+            //RandomPatrolPoint();
             translation = Matrix.CreateTranslation(position);
             //behavious[0] = Flee;
             behavious = new Behavious[2];
@@ -171,10 +171,10 @@ namespace Game1
             position += currentVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             translation = Matrix.CreateTranslation(position);
             //targetPosition = targetTank.CurrentPosition;
-            //double turnedAngle = rotationSpeed * gameTime.ElapsedGameTime.Milliseconds;
-            //orintation = targetPosition - position;
-            //orintationAngle = Math.Atan2(orintation.X, orintation.Z);
-            //RotateGhost(turnedAngle);
+            double turnedAngle = rotationSpeed * gameTime.ElapsedGameTime.Milliseconds;
+            orintation = targetPosition - position;
+            orintationAngle = Math.Atan2(orintation.X, orintation.Z);
+            RotateGhost(turnedAngle);
         }
 
         private void IDLE(GameTime gameTime)
