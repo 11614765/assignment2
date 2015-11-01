@@ -210,7 +210,7 @@ namespace Game1
                     {
                         for (int i=0; i<levelInfoList[currentLevel].numHuman; i++)
                         {
-                            Vector3 humPosition = new Vector3(((Game1)Game).rnd.Next(-1000, 1000),
+                            Vector3 humPosition = new Vector3(((Game1)Game).rnd.Next(600, 1000),
                                 0,
                                 ((Game1)Game).rnd.Next(-1000, 1000));
                             enemies.Add(new Human(Game.Content.Load<Model>(@"Models/Tank/anna"), humPosition, tank, 3));

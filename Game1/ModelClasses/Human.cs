@@ -68,7 +68,7 @@ namespace Game1
             currentVelocity = Vector3.Normalize(new Vector3(0, 0, 1));
 
             RandomPatrolPoint();
-            //translation = Matrix.CreateTranslation(position);
+            translation = Matrix.CreateTranslation(position);
             //behavious[0] = Flee;
             behavious = new Behavious[2];
         }
@@ -170,11 +170,11 @@ namespace Game1
             //currentVelocity += steer.seek(targetTank.CurrentPosition, position, currentVelocity);
             position += currentVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             translation = Matrix.CreateTranslation(position);
-            targetPosition = targetTank.CurrentPosition;
-            double turnedAngle = rotationSpeed * gameTime.ElapsedGameTime.Milliseconds;
-            orintation = targetPosition - position;
-            orintationAngle = Math.Atan2(orintation.X, orintation.Z);
-            RotateGhost(turnedAngle);
+            //targetPosition = targetTank.CurrentPosition;
+            //double turnedAngle = rotationSpeed * gameTime.ElapsedGameTime.Milliseconds;
+            //orintation = targetPosition - position;
+            //orintationAngle = Math.Atan2(orintation.X, orintation.Z);
+            //RotateGhost(turnedAngle);
         }
 
         private void IDLE(GameTime gameTime)
