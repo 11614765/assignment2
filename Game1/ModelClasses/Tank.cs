@@ -14,6 +14,7 @@ namespace Game1
         public Vector3 CurrentPosition;
         
         public Vector3 tankDirection;
+        public Vector3 turretDirection;
         double threshold;
         Double orientation = 0;
         public Vector3 velocity = Vector3.Backward * 50;
@@ -31,6 +32,7 @@ namespace Game1
         ButtonState preMouseLeftButton = Mouse.GetState().LeftButton;
         MousePicking mousePick;
         public Vector3 PickPosition { get; set; }
+        public Vector3 unPickPosition;
         Camera tankcamera;
         Vector3 currentCameraDirection;
 
@@ -63,7 +65,7 @@ namespace Game1
         Matrix canonTransform;
         Matrix hatchTransform;
 
-        public float wheelRotationValue;
+        public float  wheelRotationValue;
         //float steerRotationValue;
         public float hatchRotationValue;
         public float canonRotationValue;
@@ -122,9 +124,15 @@ namespace Game1
             //min = MIN + CurrentPosition;
             //max = MAX + CurrentPosition;
             //tankBox = new BoundingBox(min, max);
+            //tankDirection = velocity.;
+            if (mousePick.GetCollisionPosition().HasValue == true)
+            {
+                unPickPosition = mousePick.GetCollisionPosition().Value;
+                turretDirection = unPickPosition - CurrentPosition+tankDirection;
+                turretRotationValue = (float)Math.Atan2(turretDirection.X, turretDirection.Z) - (float)Math.Atan2(velocity.X, velocity.Z);
+            }
 
-            turretRotationValue = (float)Math.Atan2(tankcamera.cameraDirection.X, tankcamera.cameraDirection.Z) + MathHelper.Pi;
-            canonRotationValue = (float)Math.Atan2(tankcamera.cameraDirection.Y,tankcamera.cameraDirection.Z ) + MathHelper.Pi - MathHelper.Pi/180 *20;
+            //canonRotationValue = (float)Math.Atan2(tankcamera.cameraDirection.Y,tankcamera.cameraDirection.Z ) + MathHelper.Pi - MathHelper.Pi/180 *20;
             UpdateCamera();
             //float speed = 10;
             float time = (gameTime.ElapsedGameTime.Milliseconds)/1000f;
