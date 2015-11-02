@@ -13,10 +13,14 @@ Allowed conditions:
 -->
 
 <fsm name ="state" startState="PURSUE">
- 
+
+  <state fromState="IDLE">
+    <transition condition="PLAYERFAR" toState="PURSUE" />
+  </state>
   
   <state fromState="PURSUE">
     <transition condition="PLAYERNEAR" toState="FLEE" />
+    <transition condition ="PLAYERTOOFAR" toState="IDLE"/>
   </state>
   
   <state fromState="FLEE">

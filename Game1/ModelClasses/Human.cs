@@ -10,16 +10,18 @@ using System.Xml.Linq;
 namespace Game1
 {
 
-    public enum HumanState
+    public enum GhostState
     {
+        IDLE,
         PURSUE,
         FLEE
     }
 
-    public enum HumanConditions
+    public enum GhostConditions
     {
-        TANKNEAR,
-        TANKFAR
+        PLAYERNEAR,
+        PLAYERFAR,
+        PLAYERTOOFAR
     }
 
     class Human : BasicModel
@@ -48,55 +50,92 @@ namespace Game1
         private float boundary = 1000f;
         private float scale = 0.05f;
         private int mass = 10;
-        HumanState humanState;
+        GhostState ghostState;
+        GhostConditions ghostCondition;
         Steering steer = new Steering(100f, 100f);
         private bool isMoving;
+        XElement states = XElement.Load(@"Content/config/fsm_Human.xml");
 
-
-        public Human(Model m, Vector3 Position, Tank tank, int speed) : base(m)
+        public Human(Model m, Vector3 Position, Tank tank, int speed)
+            : base(m)
         {
 
-            humanState = HumanState.PURSUE;
+            ghostState = GhostState.IDLE;
             this.position = Position;
             this.targetTank = tank;
             this.maxSpeed = speed;
 
             currentVelocity = Vector3.Normalize(new Vector3(0, 0, 1)); 
 
-            RandomPatrolPoint();
-            //translation = Matrix.CreateTranslation(position);
+            //RandomPatrolPoint();
+            translation = Matrix.CreateTranslation(position);
             //behavious[0] = Flee;
             behavious = new Behavious[2];
-            XElement states = XElement.Load(@"Content/config/fsm_Human.xml");
-            int i = 0;
-            foreach (XElement state in states.Elements())
-            {
-
-                foreach (XElement Todo in state.Elements())
-                {
-                    if (Todo.Attribute("condition").Value == "PLAYERNEAR")
-                    {
-                        i = 0;
-                    }
-                    if (Todo.Attribute("condition").Value == "PLAYERFAR")
-                    {
-                        i = 1;
-                    }
-                    if (Todo.Attribute("toState").Value == "FLEE")
-                    {
-                        behavious[i] = Flee;
-                    }
-                    if (Todo.Attribute("toState").Value == "PURSUE")
-                    {
-                        behavious[i] = Pursue;
-                    }
-                }
-
-            }
         }
 
+
         public override void Update(GameTime gameTime)
+            {
+            float distance = (targetTank.CurrentPosition - this.position).Length();
+
+            if (distance < fleeDistance)
+                {
+                ghostCondition = GhostConditions.PLAYERNEAR;
+            }
+            else if (distance > 160&& distance < 700)
+                    {
+                ghostCondition = GhostConditions.PLAYERFAR;
+        }
+            else
+                    {
+                ghostCondition = GhostConditions.PLAYERTOOFAR;
+                    }
+
+            foreach (XElement state in states.Elements())
+            {
+                foreach (XElement changestate in state.Elements())
+                {
+                    if(state.Attribute("fromState").Value == ghostState.ToString())
+                    {
+                        if (changestate.Attribute("condition").Value==ghostCondition.ToString())
+                        {
+                            string toState = changestate.Attribute("toState").Value;
+                            if(toState== GhostState.IDLE.ToString())
+                            {
+                                ghostState = GhostState.IDLE;
+
+                            }
+                            else if (toState == GhostState.PURSUE.ToString())
+                    {
+                                ghostState = GhostState.PURSUE;
+                                
+                    }
+                            else if (toState == GhostState.FLEE.ToString())
+                    {
+                                ghostState = GhostState.FLEE;
+                                
+                            }
+
+                        }
+                    }
+                    }
+
+                }
+
+            if (ghostState == GhostState.IDLE)
+            {
+                IDLE(gameTime);
+            }
+            if (ghostState == GhostState.PURSUE)
+            {
+                Pursue(gameTime);
+        }
+
+            if (ghostState == GhostState.FLEE)
         {
+                Flee(gameTime);
+            }
+
 
             //tankPosition = tank1.CurrentPosition;
             //direction = tankPosition - world.Translation;
@@ -111,33 +150,10 @@ namespace Game1
             //    Vector3 path = direction * speed;
             //    world *= Matrix.CreateTranslation(path);
             //}
-            float distance = (targetTank.CurrentPosition - this.position).Length();
 
-            if (distance < fleeDistance)
-            {
-                humanState = HumanState.FLEE;
-            }
-            if (distance > 160)
-            {
-                humanState = HumanState.PURSUE;
-            }
-           
-
-            if (humanState == HumanState.FLEE)
-            {
-                behavious[0](gameTime);
-
-            }
-            else if (humanState == HumanState.PURSUE)
-            {
-                behavious[1](gameTime);
                 
-            }
 
-            else
-            {
                
-            }
             base.Update(gameTime);
 
         }
@@ -154,7 +170,16 @@ namespace Game1
             //currentVelocity += steer.seek(targetTank.CurrentPosition, position, currentVelocity);
             position += currentVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             translation = Matrix.CreateTranslation(position);
-            //orintation = targetPosition - position;
+            //targetPosition = targetTank.CurrentPosition;
+            double turnedAngle = rotationSpeed * gameTime.ElapsedGameTime.Milliseconds;
+            orintation = targetPosition - position;
+            orintationAngle = Math.Atan2(orintation.X, orintation.Z);
+            RotateGhost(turnedAngle);
+        }
+
+        private void IDLE(GameTime gameTime)
+        {
+
         }
 
 

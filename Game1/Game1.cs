@@ -85,7 +85,7 @@ namespace Game1
             // Splash screen component 
             splashScreen = new SplashScreen(this);
             Components.Add(splashScreen);
-            splashScreen.SetData("Welcome to War of Tank", currentGameState);
+            splashScreen.SetData("Tank surrounded by Ghosts", currentGameState);
             //开始界面end-------------
 
             IsMouseVisible = true;

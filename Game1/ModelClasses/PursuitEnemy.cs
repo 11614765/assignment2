@@ -50,7 +50,8 @@ namespace Game1
             max = MAX + CurrentPosition;
             tankBox = new BoundingBox(min, max);
             //float distance = Vector3.Subtract(targetTank.CurrentPosition, this.CurrentPosition).Length();
-//distance > Tank.destinationThreshold &&            
+//distance > Tank.destinationThreshold &&    
+            //if (tankBox.Contains(tankBox) == ContainmentType.Disjoint)
             if (tankBox.Contains(targetTank.tankBox) == ContainmentType.Disjoint)
             {
                 
