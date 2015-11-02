@@ -77,7 +77,7 @@ namespace Game1
                     if (Todo.Attribute("condition").Value == "PLAYERNEAR")
                     {
                         i = 0;
-        }
+                    }
                     if (Todo.Attribute("condition").Value == "PLAYERFAR")
                     {
                         i = 1;
